@@ -7,6 +7,19 @@
 #include "Logging/LogMacros.h"
 #include "Cpp_InventorySystemCharacter.generated.h"
 
+USTUCT()
+struct FInteractionData {
+	GENERATED_USTRUCT_BODY()
+
+	FInteractionData() : CurrentInteractable(nullptr), LastInteractionCheckTime(0.0f) {};
+
+	UPROPERTY()
+	AActor* CurrentInteractable;
+
+	UPROPERTY()
+	float LastInteractionCheckTime;
+};
+
 class USpringArmComponent;
 class UCameraComponent;
 class UInputMappingContext;
@@ -19,6 +32,31 @@ UCLASS(config=Game)
 class ACpp_InventorySystemCharacter : public ACharacter
 {
 	GENERATED_BODY()
+
+public:
+	//=========================================================================================================================
+	// PROPERTIES & VARIABLES
+	//=========================================================================================================================
+
+	
+
+
+	//=========================================================================================================================
+	// FUNCTIONS
+	//=========================================================================================================================
+	ACpp_InventorySystemCharacter();
+
+	/** Returns CameraBoom subobject **/
+	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
+
+	/** Returns FollowCamera subobject **/
+	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
+
+
+protected:
+	//=========================================================================================================================
+	// PROPERTIES & VARIABLES
+	//=========================================================================================================================
 
 	/** Camera boom positioning the camera behind the character */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
@@ -44,30 +82,26 @@ class ACpp_InventorySystemCharacter : public ACharacter
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* LookAction;
 
-public:
-	ACpp_InventorySystemCharacter();
-	
+	// The Character | is for organization purposes
+	UPROPERTY(VisibleAnywhere, Category = "Character | Interaction")
+	TScriptInterface<IInteractionInterface> TargetInteractable;
 
-protected:
+	//=========================================================================================================================
+	// FUNCTIONS
+	//=========================================================================================================================
 
 	/** Called for movement input */
 	void Move(const FInputActionValue& Value);
 
 	/** Called for looking input */
-	void Look(const FInputActionValue& Value);
-			
+	void Look(const FInputActionValue& Value);			
 
-protected:
 	// APawn interface
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	
 	// To add mapping context
 	virtual void BeginPlay();
 
-public:
-	/** Returns CameraBoom subobject **/
-	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
-	/** Returns FollowCamera subobject **/
-	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
+
 };
 
