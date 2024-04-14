@@ -54,8 +54,7 @@ ACpp_InventorySystemCharacter::ACpp_InventorySystemCharacter()
 	// are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)
 }
 
-void ACpp_InventorySystemCharacter::BeginPlay()
-{
+void ACpp_InventorySystemCharacter::BeginPlay() {
 	// Call the base class  
 	Super::BeginPlay();
 
@@ -69,9 +68,57 @@ void ACpp_InventorySystemCharacter::BeginPlay()
 	}
 }
 
-//////////////////////////////////////////////////////////////////////////
-// Input
+void ACpp_InventorySystemCharacter::Tick(float DeltaSeconds) {
+	Super::Tick(DeltaSeconds);
 
+
+}
+
+void ACpp_InventorySystemCharacter::PerformInteractionCheck() {
+	InteractionData.LastInteractionCheckTime = GetWorld()->GetTimeSeconds();
+
+	FVector TraceStart{GetPawnViewLocation()};
+	FVector TraceEnd{TraceStart + GetViewRotation().Vector() * InteractionCheckDistance};
+
+	FCollisionQueryParams QueryParams;
+	QueryParams.AddIgnoredActor(this);
+	FHitResult TraceHit;
+
+	if (GetWorld()->LineTraceSingleByChannel(TraceHit, TraceStart, TraceEnd, ECC_Visibility, QueryParams)) {
+		// Check if the actor implements the Interaction Interface
+		if (TraceHit.GetActor()->GetClass()->ImplementsInterface(UInteractionInterface::StaticClass())) {
+			const float Distance = (TraceHit.ImpactPoint - TraceStart).Size();
+			// Check if the actor is within interaction distance & is not the current interactable
+			if (TraceHit.GetActor() != InteractionData.CurrentInteractable && Distance <= InteractionCheckDistance) {
+				FoundInteractable(TraceHit.GetActor());
+				return;
+			}
+			if (TraceHit.GetActor() == InteractionData.CurrentInteractable) {
+				return;
+			}
+		}
+	}
+	NoInteractableFound();
+}
+
+void ACpp_InventorySystemCharacter::FoundInteractables(AActor Interactables) {
+}
+
+void ACpp_InventorySystemCharacter::NoInteractableFound() {
+}
+
+void ACpp_InventorySystemCharacter::BeginInteract() {
+}
+
+void ACpp_InventorySystemCharacter::EndInteract() {
+}
+
+void ACpp_InventorySystemCharacter::Interact() {
+}
+
+
+
+// Input Actions
 void ACpp_InventorySystemCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	// Set up action bindings

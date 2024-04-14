@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "Logging/LogMacros.h"
+#include "InteractionInterface.h"
 #include "Cpp_InventorySystemCharacter.generated.h"
 
 USTUCT()
@@ -52,7 +53,6 @@ public:
 	/** Returns FollowCamera subobject **/
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 
-
 protected:
 	//=========================================================================================================================
 	// PROPERTIES & VARIABLES
@@ -86,9 +86,26 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category = "Character | Interaction")
 	TScriptInterface<IInteractionInterface> TargetInteractable;
 
+
+	float InteractionFrequency;
+	
+	float InteractionCheckDistance;
+
+	FTimerHandle TimerHandleInteraction;
+
+	FInteractionData InteractionData;
+
+
 	//=========================================================================================================================
 	// FUNCTIONS
 	//=========================================================================================================================
+
+	void PerformInteractionCheck();
+	void FoundInteractable(AActor* Interactables);
+	void NoInteractableFound();
+	void BeginInteract();
+	void EndInteract();
+
 
 	/** Called for movement input */
 	void Move(const FInputActionValue& Value);
@@ -102,6 +119,6 @@ protected:
 	// To add mapping context
 	virtual void BeginPlay();
 
-
+	virtual void Tick(float DeltaSeconds) override;
 };
 
