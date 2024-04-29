@@ -1,15 +1,20 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
+// Game
 #include "Cpp_InventorySystemCharacter.h"
+
+
+// Engine
+#include "EnhancedInputComponent.h"
+#include "EnhancedInputSubsystems.h"
 #include "Engine/LocalPlayer.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/Controller.h"
-#include "EnhancedInputComponent.h"
-#include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
+#include "DrawDebugHelpers.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
@@ -50,8 +55,10 @@ ACpp_InventorySystemCharacter::ACpp_InventorySystemCharacter()
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName); // Attach the camera to the end of the boom and let the boom adjust to match the controller orientation
 	FollowCamera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
 
-	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
-	// are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)
+	InteractionFrequency = 0.1f;
+	InteractionCheckDistance = 225.0f;
+
+	BaseEyeHeight = 74.0f;
 }
 
 void ACpp_InventorySystemCharacter::BeginPlay() {
@@ -71,7 +78,9 @@ void ACpp_InventorySystemCharacter::BeginPlay() {
 void ACpp_InventorySystemCharacter::Tick(float DeltaSeconds) {
 	Super::Tick(DeltaSeconds);
 
-
+	if (GetWorld()->TimeSince(InteractionData.LastInteractionCheckTime) > InteractionFrequency) {
+		PerformInteractionCheck();
+	}
 }
 
 void ACpp_InventorySystemCharacter::PerformInteractionCheck() {
@@ -80,28 +89,34 @@ void ACpp_InventorySystemCharacter::PerformInteractionCheck() {
 	FVector TraceStart{GetPawnViewLocation()};
 	FVector TraceEnd{TraceStart + GetViewRotation().Vector() * InteractionCheckDistance};
 
-	FCollisionQueryParams QueryParams;
-	QueryParams.AddIgnoredActor(this);
-	FHitResult TraceHit;
+	float lookDirection{(float)FVector::DotProduct(GetActorForwardVector(), GetViewRotation().Vector())};
 
-	if (GetWorld()->LineTraceSingleByChannel(TraceHit, TraceStart, TraceEnd, ECC_Visibility, QueryParams)) {
-		// Check if the actor implements the Interaction Interface
-		if (TraceHit.GetActor()->GetClass()->ImplementsInterface(UInteractionInterface::StaticClass())) {
-			const float Distance = (TraceHit.ImpactPoint - TraceStart).Size();
-			// Check if the actor is within interaction distance & is not the current interactable
-			if (TraceHit.GetActor() != InteractionData.CurrentInteractable && Distance <= InteractionCheckDistance) {
-				FoundInteractable(TraceHit.GetActor());
-				return;
-			}
-			if (TraceHit.GetActor() == InteractionData.CurrentInteractable) {
-				return;
+	if(lookDirection > 0) {
+		DrawDebugLine(GetWorld(), TraceStart, TraceEnd, FColor::Red, false, 1.0f, 0, 2.0f);
+
+		FCollisionQueryParams QueryParams;
+		QueryParams.AddIgnoredActor(this);
+		FHitResult TraceHit;
+
+		if(GetWorld()->LineTraceSingleByChannel(TraceHit, TraceStart, TraceEnd, ECC_Visibility, QueryParams)) {
+			// Check if the actor implements the Interaction Interface
+			if(TraceHit.GetActor()->GetClass()->ImplementsInterface(UInteractionInterface::StaticClass())) {
+				const float Distance = (TraceHit.ImpactPoint - TraceStart).Size();
+				// Check if the actor is within interaction distance & is not the current interactable
+				if(TraceHit.GetActor() != InteractionData.CurrentInteractable && Distance <= InteractionCheckDistance) {
+					FoundInteractable(TraceHit.GetActor());
+					return;
+				}
+				if(TraceHit.GetActor() == InteractionData.CurrentInteractable) {
+					return;
+				}
 			}
 		}
 	}
 	NoInteractableFound();
 }
 
-void ACpp_InventorySystemCharacter::FoundInteractables(AActor Interactables) {
+void ACpp_InventorySystemCharacter::FoundInteractable(AActor* Interactables) {
 }
 
 void ACpp_InventorySystemCharacter::NoInteractableFound() {
@@ -113,8 +128,7 @@ void ACpp_InventorySystemCharacter::BeginInteract() {
 void ACpp_InventorySystemCharacter::EndInteract() {
 }
 
-void ACpp_InventorySystemCharacter::Interact() {
-}
+
 
 
 

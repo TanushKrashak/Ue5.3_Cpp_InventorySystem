@@ -15,16 +15,17 @@ enum class EInteractableType : uint8 {
 	Container UMETA(DisplayName = "Container")
 };
 
-USTRUCTFInteractableData{
+USTRUCT()
+struct FInteractableData {
 	GENERATED_BODY()
+
 	FInteractableData() :
 		InteractableType(EInteractableType::Pickup),
 		Name(FText::GetEmpty()),
 		Action(FText::GetEmpty()),
 		Quantity(0),
 		InteractionDuration(0.0f)
-	{
-	};
+	{};
 
 	UPROPERTY(EditInstanceOnly)
 	EInteractableType InteractableType;

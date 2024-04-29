@@ -5,12 +5,12 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "Logging/LogMacros.h"
-#include "InteractionInterface.h"
+#include "Interfaces/InteractionInterface.h"
 #include "Cpp_InventorySystemCharacter.generated.h"
 
-USTUCT()
+USTRUCT()
 struct FInteractionData {
-	GENERATED_USTRUCT_BODY()
+	GENERATED_BODY()
 
 	FInteractionData() : CurrentInteractable(nullptr), LastInteractionCheckTime(0.0f) {};
 
