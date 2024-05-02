@@ -207,6 +207,10 @@ void ACpp_InventorySystemCharacter::SetupPlayerInputComponent(UInputComponent* P
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &ACharacter::Jump);
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
 
+		// Interacting
+		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Started, this, &ACpp_InventorySystemCharacter::BeginInteract);
+		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Completed, this, &ACpp_InventorySystemCharacter::EndInteract);
+		
 		// Moving
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ACpp_InventorySystemCharacter::Move);
 
