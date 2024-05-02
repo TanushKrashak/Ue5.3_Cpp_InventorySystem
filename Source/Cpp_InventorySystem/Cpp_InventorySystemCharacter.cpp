@@ -171,7 +171,7 @@ void ACpp_InventorySystemCharacter::BeginInteract() {
 												TargetInteractable->InteractableData.InteractionDuration, 
 												false);
 
-			}
+			} // Bug was fixed by re-adding the include for TimerManager.h
 		}
 	}
 }
