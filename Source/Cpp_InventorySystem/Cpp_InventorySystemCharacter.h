@@ -104,11 +104,11 @@ protected:
 	//=========================================================================================================================
 
 	void PerformInteractionCheck();
-	void FoundInteractable(AActor* Interactables);
+	void FoundInteractable(AActor* NewInteractable);
 	void NoInteractableFound();
 	void BeginInteract();
 	void EndInteract();
-
+	void Interact();
 
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);			

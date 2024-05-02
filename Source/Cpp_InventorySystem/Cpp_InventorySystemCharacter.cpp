@@ -2,7 +2,7 @@
 
 // Game
 #include "Cpp_InventorySystemCharacter.h"
-
+#include "TimerManager.h"
 
 // Engine
 #include "EnhancedInputComponent.h"
@@ -151,7 +151,6 @@ void ACpp_InventorySystemCharacter::NoInteractableFound() {
 		InteractionData.CurrentInteractable = nullptr;
 		TargetInteractable = nullptr;
 	}
-
 }
 
 void ACpp_InventorySystemCharacter::BeginInteract() {
@@ -161,16 +160,16 @@ void ACpp_InventorySystemCharacter::BeginInteract() {
 	if(InteractionData.CurrentInteractable) {
 		if(IsValid(TargetInteractable.GetObject())) {
 			TargetInteractable->BeginInteract();
-			if(FMath::IsNearlyZero(TargetInteractable->InteractableData.InteractionDuration, 0.1f) {
-				Interact();
+			if(FMath::IsNearlyZero(TargetInteractable->InteractableData.InteractionDuration, 0.1f)) {
+				ACpp_InventorySystemCharacter::Interact();
 			}
 			else {
 				// Set a timer to call the Interact function after the interaction duration
-				GetWorldTimerManager()->SetTimer(TimerHandleInteraction,
-												 this,
-												 &ACpp_InventorySystemCharacter::Interact,
-												 TargetInteractable->InteractableData.InteractionDuration,
-												 false);
+				GetWorldTimerManager().SetTimer(TimerHandleInteraction,
+												this,
+												&ACpp_InventorySystemCharacter::Interact,
+												TargetInteractable->InteractableData.InteractionDuration, 
+												false);
 
 			}
 		}
