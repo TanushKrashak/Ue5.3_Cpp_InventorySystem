@@ -116,19 +116,85 @@ void ACpp_InventorySystemCharacter::PerformInteractionCheck() {
 	NoInteractableFound();
 }
 
-void ACpp_InventorySystemCharacter::FoundInteractable(AActor* Interactables) {
+void ACpp_InventorySystemCharacter::FoundInteractable(AActor* NewInteractable) {
+	// If char is already interacting with something, end the interaction
+	if (IsInteracting()) {
+		EndInteract();
+	}
+	// Remove focus from old interactable
+	if(InteractionData.CurrentInteractable) {
+		TargetInteractable = InteractionData.CurrentInteractable;
+		TargetInteractable->EndFocus();
+	}
+	// Set new interactable
+	InteractionData.CurrentInteractable = NewInteractable;
+	TargetInteractable = NewInteractable;
+	// Begin focus on new interactable
+	TargetInteractable->BeginFocus();
 }
 
 void ACpp_InventorySystemCharacter::NoInteractableFound() {
+	// If char is interacting with something, end the interaction
+	if(IsInteracting()) {
+		GetWorldTimerManager().ClearTimer(TimerHandleInteraction);
+	}
+	if (InteractionData.CurrentInteractable) {
+		// Remove focus from old interactable Incase it was destroyed right after being added
+		if (IsValid(TargetInteractable.GetObject())) {
+			TargetInteractable->EndFocus();
+		}
+
+		// Hide the interactable widget on the HUD
+
+
+		// Clear the current interactable
+		InteractionData.CurrentInteractable = nullptr;
+		TargetInteractable = nullptr;
+	}
+
 }
 
 void ACpp_InventorySystemCharacter::BeginInteract() {
+	// Verify nothing has changed since the interaction check
+	PerformInteractionCheck();
+
+	if(InteractionData.CurrentInteractable) {
+		if(IsValid(TargetInteractable.GetObject())) {
+			TargetInteractable->BeginInteract();
+			if(FMath::IsNearlyZero(TargetInteractable->InteractableData.InteractionDuration, 0.1f) {
+				Interact();
+			}
+			else {
+				// Set a timer to call the Interact function after the interaction duration
+				GetWorldTimerManager()->SetTimer(TimerHandleInteraction,
+												 this,
+												 &ACpp_InventorySystemCharacter::Interact,
+												 TargetInteractable->InteractableData.InteractionDuration,
+												 false);
+
+			}
+		}
+	}
 }
 
 void ACpp_InventorySystemCharacter::EndInteract() {
+	// Clear the timer
+	GetWorldTimerManager().ClearTimer(TimerHandleInteraction);
+
+	if(IsValid(TargetInteractable.GetObject())) {
+		TargetInteractable->EndInteract();
+	}
+	
 }
 
+void ACpp_InventorySystemCharacter::Interact() {
+	// Clear the timer
+	GetWorldTimerManager().ClearTimer(TimerHandleInteraction);
 
+	if(IsValid(TargetInteractable.GetObject())) {
+		TargetInteractable->Interact();
+	}
+}
 
 
 
