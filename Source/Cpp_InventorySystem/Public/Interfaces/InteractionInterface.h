@@ -6,6 +6,8 @@
 #include "UObject/Interface.h"
 #include "InteractionInterface.generated.h"
 
+class ACpp_InventorySystemCharacter; // Forward Declaration
+
 UENUM()
 enum class EInteractableType : uint8 {
 	Device UMETA(DisplayName = "Device"),
@@ -67,7 +69,7 @@ public:
 	virtual void EndFocus();
 	virtual void BeginInteract();
 	virtual void EndInteract();
-	virtual void Interact();
+	virtual void Interact(ACpp_InventorySystemCharacter* PlayerChracter);
 
 	FInteractableData InteractableData;
 };

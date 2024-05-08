@@ -49,7 +49,7 @@ void AInterfaceTestActor::EndInteract() {
 	UE_LOG(LogTemp, Warning, TEXT("Calling EndInteract On Interface Test Actor"))
 }
 
-void AInterfaceTestActor::Interact() {
+void AInterfaceTestActor::Interact(ACpp_InventorySystemCharacter* PlayerChracter) {
 	UE_LOG(LogTemp, Warning, TEXT("Calling Interact On Interface Test Actor"))
 }
 

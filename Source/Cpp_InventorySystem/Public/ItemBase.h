@@ -24,29 +24,29 @@ public:
 	UInventoryComponent* OwningInventory;*/
 
 	// UiMin and UiMax are used to min and max the value of the Quantity
-	UPROPERTY(VisibleAnywhere, Category="Item Data", meta = (UIMin = 1, UIMax = 100))
+	UPROPERTY(VisibleAnywhere, Category="Item")
 	int32 Quantity;
 
-	UPROPERTY(EditAnywhere, Category="Item Data")
+	UPROPERTY(VisibleAnywhere, Category="Item")
 	FName ID;
 
 	// Create Instance Variables
-	UPROPERTY(EditAnywhere, Category="Item Data")
+	UPROPERTY(VisibleAnywhere, Category="Item")
 	EItemType ItemType;
 
-	UPROPERTY(EditAnywhere, Category="Item Data")
+	UPROPERTY(VisibleAnywhere, Category="Item")
 	EItemQuality ItemQuality;
 
-	UPROPERTY(EditAnywhere, Category="Item Data")
+	UPROPERTY(VisibleAnywhere, Category="Item")
 	FItemStatistics ItemStatistics;
 
-	UPROPERTY(EditAnywhere, Category="Item Data")
+	UPROPERTY(VisibleAnywhere, Category="Item")
 	FItemTextData ItemTextData;
 
-	UPROPERTY(EditAnywhere, Category="Item Data")
+	UPROPERTY(VisibleAnywhere, Category="Item")
 	FItemNumericData ItemNumericData;
 
-	UPROPERTY(EditAnywhere, Category="Item Data")
+	UPROPERTY(VisibleAnywhere, Category="Item")
 	FItemAssetData ItemAssetData;
 
 
@@ -81,7 +81,7 @@ public:
 protected:
 	// Overridable == Function to be able to compare two Items
 	bool operator==(const FName& OtherID) const {
-		return ID == OtherID;
+		return this->ID == OtherID;
 	}
 
 };

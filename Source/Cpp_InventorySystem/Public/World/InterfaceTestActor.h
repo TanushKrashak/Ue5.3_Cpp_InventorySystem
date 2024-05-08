@@ -32,6 +32,6 @@ public:
 	void BeginInteract() override;
 	void EndFocus() override;
 	void EndInteract() override;
-	void Interact() override;
+	void Interact(ACpp_InventorySystemCharacter* PlayerCharacter) override;
 
 };

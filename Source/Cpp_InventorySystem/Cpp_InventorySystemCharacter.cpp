@@ -101,9 +101,8 @@ void ACpp_InventorySystemCharacter::PerformInteractionCheck() {
 		if(GetWorld()->LineTraceSingleByChannel(TraceHit, TraceStart, TraceEnd, ECC_Visibility, QueryParams)) {
 			// Check if the actor implements the Interaction Interface
 			if(TraceHit.GetActor()->GetClass()->ImplementsInterface(UInteractionInterface::StaticClass())) {
-				const float Distance = (TraceHit.ImpactPoint - TraceStart).Size();
 				// Check if the actor is within interaction distance & is not the current interactable
-				if(TraceHit.GetActor() != InteractionData.CurrentInteractable && Distance <= InteractionCheckDistance) {
+				if(TraceHit.GetActor() != InteractionData.CurrentInteractable) {
 					FoundInteractable(TraceHit.GetActor());
 					return;
 				}
@@ -191,11 +190,9 @@ void ACpp_InventorySystemCharacter::Interact() {
 	GetWorldTimerManager().ClearTimer(TimerHandleInteraction);
 
 	if(IsValid(TargetInteractable.GetObject())) {
-		TargetInteractable->Interact();
+		TargetInteractable->Interact(this);
 	}
 }
-
-
 
 // Input Actions
 void ACpp_InventorySystemCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
