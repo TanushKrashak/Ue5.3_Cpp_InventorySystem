@@ -28,23 +28,41 @@ virtual void ACpp_InventoryHUD::BeginPlay() {
 }
 
 void ACpp_InventoryHUD::DisplayMenu() {
-
+	if(MainMenuWidget) {
+		bIsMenuVisible = true;
+		MainMenuWidget->SetVisibility(ESlateVisibility::Visible);
+	}
 }
 
 void ACpp_InventoryHUD::HideMenu() {
+	if(MainMenuWidget) {
+		bIsMenuVisible = false;
+		MainMenuWidget->SetVisibility(ESlateVisibility::Collapsed);
+	}
 
 }
 
 void ACpp_InventoryHUD::ShowInteractionWidget() {
+	if(InteractionWidget) {
+		InteractionWidget->SetVisibility(ESlateVisibility::Visible);
+	}
 
 }
 
 void ACpp_InventoryHUD::HideInteractionWidget() {
+	if(InteractionWidget) {
+		InteractionWidget->SetVisibility(ESlateVisibility::Collapsed);
+	}
 
 }
 
 void ACpp_InventoryHUD::UpdateInteractionWidget(const FInteractableData* InteractableData) {
-
+	if (InteractableWidget) {
+		if(InteractionWidget->GetVisibility() == ESlateVisibility::Collapsed) {
+			InteractionWidget->SetVisibility(ESlateVisibility::Visible);
+		}
+		//InteractionWidget->UpdateWidget(InteractableData);
+	}
 }
 
 
