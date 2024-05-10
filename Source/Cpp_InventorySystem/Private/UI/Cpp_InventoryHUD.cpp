@@ -3,13 +3,13 @@
 
 #include "UI/Cpp_InventoryHUD.h"
 #include "UI/Cpp_WGT_MainMenu.h"
-#include "UI/Cpp_WGT_Interaction.h"
+#include "UI/Interaction/Cpp_WGT_Interaction.h"
 
 ACpp_InventoryHUD::ACpp_InventoryHUD() {
 
 }
 
-virtual void ACpp_InventoryHUD::BeginPlay() {
+void ACpp_InventoryHUD::BeginPlay() {
 	Super::BeginPlay();
 
 	if(MainMenuClass) {
@@ -57,7 +57,7 @@ void ACpp_InventoryHUD::HideInteractionWidget() {
 }
 
 void ACpp_InventoryHUD::UpdateInteractionWidget(const FInteractableData* InteractableData) {
-	if (InteractableWidget) {
+	if (InteractionWidget) {
 		if(InteractionWidget->GetVisibility() == ESlateVisibility::Collapsed) {
 			InteractionWidget->SetVisibility(ESlateVisibility::Visible);
 		}
