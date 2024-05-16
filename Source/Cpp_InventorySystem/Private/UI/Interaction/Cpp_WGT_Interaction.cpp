@@ -4,20 +4,20 @@
 #include "UI/Interaction/Cpp_WGT_Interaction.h"
 #include "Components/TextBlock.h"
 #include "Components/ProgressBar.h"
+#include "Interfaces/InteractionInterface.h"
+
+void UCpp_WGT_Interaction::NativeOnInitialized() {
+	Super::NativeOnInitialized();
+
+	// Percentage Delegate is used for updating the progress bar
+	PB_Interaction->PercentDelegate.BindUFunction(this, "UpdateInteractionProgress");
+}
 
 void UCpp_WGT_Interaction::NativeConstruct() {
 	Super::NativeConstruct();
 
 	TXT_KeyPressText->SetText(FText::FromString("Press"));
 	CurrentInteractionDuration = 0.0f;
-}
-
-
-UMG_API void UCpp_WGT_Interaction::NativeOnInitialized() {
-	Super::NativeOnInitialized();
-
-	// Percentage Delegate is used for updating the progress bar
-	PB_Interaction->PercentDelegate.BindUFunction(this, "UpdateInteractionProgress");
 }
 
 void UCpp_WGT_Interaction::UpdateWidget(const FInteractableData* InteractableData) {
@@ -28,7 +28,7 @@ void UCpp_WGT_Interaction::UpdateWidget(const FInteractableData* InteractableDat
 
 			// Shows or Hides the Quantity TextBlock based on the quantity of the item
 			if(InteractableData->Quantity == 1) {
-				TXT_Quantity->SetVisibility(EVisibility::Collapsed);
+				TXT_Quantity->SetVisibility(ESlateVisibility::Collapsed);
 			}
 			else {
 				TXT_Quantity->SetText(FText::Format(NSLOCTEXT("InteractionWidget", "TXT_Quantity", "x{0}"), InteractableData->Quantity));
