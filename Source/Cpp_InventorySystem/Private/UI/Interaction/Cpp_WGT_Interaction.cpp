@@ -48,7 +48,10 @@ void UCpp_WGT_Interaction::UpdateWidget(const FInteractableData* InteractableDat
 		case EInteractableType::Container:
 			break;
 	}
-}
+
+	TXT_Action->SetText(InteractableData->Action);
+	TXT_Name->SetText(InteractableData->Name);
+}	
 
 float UCpp_WGT_Interaction::UpdateInteractionProgress() {
 

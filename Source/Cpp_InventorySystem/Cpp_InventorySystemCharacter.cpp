@@ -3,6 +3,7 @@
 // Game
 #include "Cpp_InventorySystemCharacter.h"
 #include "TimerManager.h"
+#include "UI/Cpp_InventoryHUD.h"
 
 // Engine
 #include "EnhancedInputComponent.h"
@@ -73,6 +74,8 @@ void ACpp_InventorySystemCharacter::BeginPlay() {
 			Subsystem->AddMappingContext(DefaultMappingContext, 0);
 		}
 	}
+
+	HUD = Cast<ACpp_InventoryHUD>(GetWorld()->GetFirstPlayerController()->GetHUD());
 }
 
 void ACpp_InventorySystemCharacter::Tick(float DeltaSeconds) {
@@ -128,6 +131,9 @@ void ACpp_InventorySystemCharacter::FoundInteractable(AActor* NewInteractable) {
 	// Set new interactable
 	InteractionData.CurrentInteractable = NewInteractable;
 	TargetInteractable = NewInteractable;
+
+	HUD->UpdateInteractionWidget(&TargetInteractable->InteractableData);
+
 	// Begin focus on new interactable
 	TargetInteractable->BeginFocus();
 }
@@ -144,7 +150,7 @@ void ACpp_InventorySystemCharacter::NoInteractableFound() {
 		}
 
 		// Hide the interactable widget on the HUD
-
+		HUD->HideInteractionWidget();
 
 		// Clear the current interactable
 		InteractionData.CurrentInteractable = nullptr;

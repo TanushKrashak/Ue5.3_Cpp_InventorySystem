@@ -8,6 +8,8 @@
 #include "Interfaces/InteractionInterface.h"
 #include "Cpp_InventorySystemCharacter.generated.h"
 
+
+
 USTRUCT()
 struct FInteractionData {
 	GENERATED_BODY()
@@ -21,6 +23,8 @@ struct FInteractionData {
 	float LastInteractionCheckTime;
 };
 
+// Forward Declaration
+class ACpp_InventoryHUD;
 class USpringArmComponent;
 class UCameraComponent;
 class UInputMappingContext;
@@ -60,6 +64,9 @@ protected:
 	//=========================================================================================================================
 	// PROPERTIES & VARIABLES
 	//=========================================================================================================================
+
+	UPROPERTY()
+	ACpp_InventoryHUD* HUD;
 
 	/** Camera boom positioning the camera behind the character */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))

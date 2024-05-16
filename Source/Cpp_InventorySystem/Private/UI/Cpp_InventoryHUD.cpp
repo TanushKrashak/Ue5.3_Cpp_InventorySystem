@@ -57,12 +57,11 @@ void ACpp_InventoryHUD::HideInteractionWidget() {
 }
 
 void ACpp_InventoryHUD::UpdateInteractionWidget(const FInteractableData* InteractableData) {
-	if (InteractionWidget) {
+	if(InteractionWidget) {
 		if(InteractionWidget->GetVisibility() == ESlateVisibility::Collapsed) {
 			InteractionWidget->SetVisibility(ESlateVisibility::Visible);
 		}
-		//InteractionWidget->UpdateWidget(InteractableData);
+		InteractionWidget->UpdateWidget(InteractableData);
 	}
 }
-
 
