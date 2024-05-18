@@ -4,11 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Interfaces/InteractionInterface.h"
 #include "Pickup.generated.h"
 
 class UItemBase;
 class UDataTable;
 
+// Parents should be Actor and InteractionInterface which exists in Interface folder
 UCLASS()
 class CPP_INVENTORYSYSTEM_API APickup : public AActor, public IInteractionInterface
 {
@@ -27,7 +29,7 @@ public:
 	// Sets default values for this actor's properties
 	APickup();
 
-	void InitializePickup(const TSubClassOf<UItemBase> BaseClass, const int32 InQuantity);
+	void InitializePickup(const TSubclassOf<UItemBase> BaseClass, const int32 InQuantity);
 
 	void InitializeDrop(UItemBase* ItemToDrop, const int32 InQuantity);
 
@@ -67,6 +69,8 @@ protected:
 	virtual void BeginPlay() override;
 
 	virtual void Interact(ACpp_InventorySystemCharacter* PlayerChracter) override;
+
+	void UpdateInteractableData();
 
 	UFUNCTION()
 	void TakePickup(const ACpp_InventorySystemCharacter* Taker);
