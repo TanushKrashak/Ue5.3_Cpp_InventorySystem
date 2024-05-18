@@ -2,6 +2,9 @@
 
 
 #include "World/Pickup.h"
+#include "ItemBase.h"
+#include "Engine/DataTable.h"
+
 
 // Sets default values
 APickup::APickup() {
@@ -21,7 +24,7 @@ void APickup::BeginPlay() {
 
 
 
-void APickup::InitializePickup(const TSubClassOf<UItemBase> BaseClass, const int32 InQuantity) {
+void APickup::InitializePickup(const TSubclassOf<UItemBase> BaseClass, const int32 InQuantity) {
 	if(ItemDataTable && !DesiredItemID.IsNone()) {
 		// Get the item data from the data table using the DesiredItemID
 		const FItemData* ItemData = ItemDataTable->FindRow<FItemData>(DesiredItemID, DesiredItemID.ToString());
@@ -59,24 +62,37 @@ void APickup::InitializeDrop(UItemBase* ItemToDrop, const int32 InQuantity) {
 void APickup::UpdateInteractableData() {
 	InstanceInteractableData.InteractableType = EInteractableType::Pickup;
 	InstanceInteractableData.Action = ItemReference->ItemTextData.InteractionText;
-	InstanceInteractableData.Name = ItemReference->ItemTextData.Name;
+	InstanceInteractableData.Name = ItemReference->ItemTextData.ItemName;
 	InstanceInteractableData.Quantity = ItemReference->Quantity;
 	InteractableData = InstanceInteractableData;
 }
 
-void APickup::TakePickup(const ACpp_InventorySystemCharacter* Taker) {
-
-}
-
 void APickup::BeginFocus() {
-	
+	if(PickupMesh) {
+		PickupMesh->SetRenderCustomDepth(true);
+	}
 }
 
 void APickup::EndFocus() {
-	
+	if(PickupMesh) {
+		PickupMesh->SetRenderCustomDepth(false);
+	}
 }
 
 void APickup::Interact(ACpp_InventorySystemCharacter* PlayerChracter) {
+	if(PlayerChracter) {
+		TakePickup(PlayerChracter);
+	}
+}
 
+void APickup::TakePickup(const ACpp_InventorySystemCharacter* Taker) {
+	if(!IsPendingKillPending()) {
+		if(ItemReference) {
+			//if (UInventoryComponent* PlayerInventory = Taker->GetInventory
+
+			// Try To Add the item to the inventory
+			// based on the result, adjust or destroy the pickup
+		}
+	}
 }
 
