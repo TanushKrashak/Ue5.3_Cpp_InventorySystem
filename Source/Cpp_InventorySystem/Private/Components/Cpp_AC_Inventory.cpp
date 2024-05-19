@@ -81,7 +81,10 @@ int32 UCpp_AC_Inventory::RemoveAmountOfItem(UItemBase* InItem, const int32 Amoun
 }
 
 void UCpp_AC_Inventory::SplitExistingStack(UItemBase* InItem, const int32 AmountToSplit) {
-
+	if(!(InventoryContents.Num() + 1 > InventorySlotsCapacity)) {
+		RemoveAmountOfItem(InItem, AmountToSplit);
+		AddNewItem(InItem, AmountToSplit);
+	}
 }
 
 FItemAddResult UCpp_AC_Inventory::HandleNonStackableItems(UItemBase* InItem, int32 AddAmount) {
