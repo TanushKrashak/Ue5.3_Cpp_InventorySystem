@@ -64,11 +64,20 @@ UItemBase* UCpp_AC_Inventory::FindNextPartialStack(UItemBase* InItem) const {
 
 void UCpp_AC_Inventory::RemoveSingleInstanceOfItem(UItemBase* ItemToRemove) {
 	InventoryContents.RemoveSingle(ItemToRemove);
+	// Calls The Broadcast Function To Tell Other Classes That The Inventory Has Been Updated.
 	OnInventoryUpdated.Broadcast();
 }
 
 int32 UCpp_AC_Inventory::RemoveAmountOfItem(UItemBase* InItem, const int32 AmountToRemove) {
+	const int32 ActualAmountToRemove = FMath::Min(AmountToRemove, InItem->Quantity);
+	InItem->SetQuantity(InItem->Quantity - ActualAmountToRemove);
 
+	// Reduces the total weight of the inventory by the amount of items removed and their weight.
+	InventoryTotalWeight -= ActualAmountToRemove * InItem->GetItemSingleWeight();
+
+	// Calls The Broadcast Function To Tell Other Classes That The Inventory Has Been Updated.
+	OnInventoryUpdated.Broadcast();
+	return ActualAmountToRemove;
 }
 
 void UCpp_AC_Inventory::SplitExistingStack(UItemBase* InItem, const int32 AmountToSplit) {
