@@ -53,11 +53,10 @@ UItemBase* UCpp_AC_Inventory::FindNextPartialStack(UItemBase* InItem) const {
 	// means it can access the InItem variable to compare it with the InventoryItem.
 	// If the result is not null, return the result.
 	if(const TArray<TObjectPtr<UItemBase>>::ElementType* Result = 
-	   InventoryContents.FindByPredicate([&InItem](const UItemBase* InventoryItem) 
-		{
-			return InventoryItem->ID == InItem->ID && !InventoryItem->IsFullItemStack();
-	    } 
-	   )) {
+		InventoryContents.FindByPredicate([&InItem](const UItemBase* InventoryItem) {
+				return InventoryItem->ID == InItem->ID && !InventoryItem->IsFullItemStack();
+			}
+		)) {
 		return *Result;
 	}
 	return nullptr;
@@ -84,7 +83,15 @@ int32 UCpp_AC_Inventory::HandleStackableItems(UItemBase* InItem, int32 AddAmount
 }
 
 int32 UCpp_AC_Inventory::CalculateWeightAddAmount(UItemBase* InItem, int32 AddAmount) {
-
+	// Calculate the amount of weight that can be added to the inventory.
+	// FloorToInt is used to round down the result of the division
+	// eg. (90 - 55) / 10 = 3.5 -> FloorToInt(3.5) = 3
+	const int32 WeightMaxAddAmount = FMath::FloorToInt((GetWeightCapacity() - InventoryTotalWeight) 
+													   / InItem->GetItemSingleWeight());
+	if(WeightMaxAddAmount >= AddAmount) {
+		return AddAmount;
+	}
+	return WeightMaxAddAmount;
 }
 
 int32 UCpp_AC_Inventory::CalculateNumberForFullStack(UItemBase* InItem, int32 InitialAddAmount) {
