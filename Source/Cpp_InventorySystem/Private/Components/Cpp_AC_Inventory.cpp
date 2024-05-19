@@ -164,6 +164,20 @@ FItemAddResult UCpp_AC_Inventory::HandleAddItem(UItemBase* InItem) {
 }
 
 void UCpp_AC_Inventory::AddNewItem(UItemBase* InItem, const int32 AddAmount) {
+	UItemBase* NewItem;
 
+	if(InItem->bIsCopy || InItem->bIsPickup) {
+		NewItem = InItem;
+		NewItem->ResetItemFlags();
+	}
+	else {
+		NewItem = InItem->CreateItemCopy();
+	}
+	NewItem->OwningInventory = this;
+	NewItem->SetQuantity(AddAmount);
+
+	InventoryContents.Add(NewItem);
+	InventoryTotalWeight += NewItem->GetItemStackWeight();	
+	OnInventoryUpdated.Broadcast();
 }
 
