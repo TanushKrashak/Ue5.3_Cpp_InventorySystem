@@ -5,7 +5,8 @@
 #include "Components/Cpp_AC_Inventory.h"
 
 UItemBase::UItemBase() {
-
+	bIsCopy = false;
+	bIsPickup = false;
 }
 
 UItemBase* UItemBase::CreateItemCopy()
@@ -23,6 +24,11 @@ UItemBase* UItemBase::CreateItemCopy()
         NewItem->ItemAssetData = ItemAssetData;
     }
     return NewItem;
+}
+
+void UItemBase::ResetItemFlags() {
+	bIsCopy = false;
+	bIsPickup = false;
 }
 
 void UItemBase::SetQuantity(const int32 NewQuantity) {
