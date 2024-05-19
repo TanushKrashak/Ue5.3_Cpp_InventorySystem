@@ -6,6 +6,8 @@
 #include "Components/ActorComponent.h"
 #include "Cpp_AC_Inventory.generated.h"
 
+class UItemBase;
+
 UENUM(BlueprintType)
 enum class EItemAddResult : uint8 {
 	IAR_NoItemsAdded UMETA(DisplayName = "No Items Added"),
@@ -73,17 +75,38 @@ public:
 	//====================================================================================================================
 	// FUNCTIONS
 	//====================================================================================================================
-
 	UCpp_AC_Inventory();	
 
-		
+	FItemAddResult HandleAddItem(UItemBase* InItem);
+	UItemBase* FindMatchingItem(UItemBase* InItem) const;
+	UItemBase* FindNextItemByID(UItemBase* InItem) const;
+	UItemBase* FindNextPartialStack(UItemBase* InItem) const;
+
+	void RemoveSingleInstanceOfItem(UItemBase* InItem);
+	int32 RemoveAmountOfItem(UItemBase* InItem, const int32 AmountToRemove);
+	void SplitExistingStack(UItemBase* InItem, const int32 AmountToSplit);
+
+	// Getters
+	FORCEINLINE float GetInventoryTotalWeight() const {};
+	FORCEINLINE float GetWeightCapacity() const {};
+	FORCEINLINE int32 GetSlotsCapacity() const {};
+	FORCEINLINE TArray<UItemBase*> GetInventoryContents() const {};
 	
+	// Setters
+	FORCEINLINE void SetSlotsCapacity(const int32 NewCapacity) {};
+	FORCEINLINE void SetWeightCapacity(const float NewCapacity) {};	
 
 protected:		
 	//====================================================================================================================
 	// PROPERTIES & VARIABLES
 	//====================================================================================================================
 
+	float InventoryTotalWeight;
+	int32 InventorySlotsCapacity;
+	float InventoryWeightCapacity;
+
+	// Templated pointer array to store the inventory contents
+	TArray<TObjectPtr<UItemBase>> InventoryContents;
 
 
 	//====================================================================================================================
@@ -92,4 +115,11 @@ protected:
 	
 	virtual void BeginPlay() override;
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+
+	FItemAddResult HandleNonStackableItems(UItemBase* InItem, int32 AddAmount);
+	int32 HandleStackableItems(UItemBase* InItem, int32 AddAmount);
+	int32 CalculateWeightAddAmount(UItemBase* InItem, int32 AddAmount);
+	int32 CalculateNumberForFullStack(UItemBase* InItem, int32 InitialAddAmount);
+
+	void AddNewItem(UItemBase* InItem, const int32 AddAmount);
 };
