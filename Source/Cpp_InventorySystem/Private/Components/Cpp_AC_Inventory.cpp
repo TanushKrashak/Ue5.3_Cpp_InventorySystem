@@ -167,10 +167,12 @@ void UCpp_AC_Inventory::AddNewItem(UItemBase* InItem, const int32 AddAmount) {
 	UItemBase* NewItem;
 
 	if(InItem->bIsCopy || InItem->bIsPickup) {
+		// If the item is already a copy or a world pickup
 		NewItem = InItem;
 		NewItem->ResetItemFlags();
 	}
 	else {
+		// used for splitting or dragging items from another inventory
 		NewItem = InItem->CreateItemCopy();
 	}
 	NewItem->OwningInventory = this;

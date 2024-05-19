@@ -4,6 +4,7 @@
 #include "World/Pickup.h"
 #include "ItemBase.h"
 #include "Engine/DataTable.h"
+#include "Components/Cpp_AC_Inventory.h"
 
 
 // Sets default values
@@ -88,10 +89,27 @@ void APickup::Interact(ACpp_InventorySystemCharacter* PlayerChracter) {
 void APickup::TakePickup(const ACpp_InventorySystemCharacter* Taker) {
 	if(!IsPendingKillPending()) {
 		if(ItemReference) {
-			//if (UInventoryComponent* PlayerInventory = Taker->GetInventory
-
-			// Try To Add the item to the inventory
-			// based on the result, adjust or destroy the pickup
+			if(UCpp_AC_Inventory* PlayerInventory = Taker->GetInventory()) {
+				const FItemAddResult AddResult = PlayerInventory->HandleAddItem(ItemReference);
+				switch(AddResult.OperationResult) {
+					case EItemAddResult::IAR_NoItemsAdded:
+						break;
+					case EItemAddResult::IAR_SomeItemsAdded:						
+						UpdateInteractableData();
+						Taker->UpdateInteractionWidget();
+						break;
+					case EItemAddResult::IAR_AllItemsAdded:
+						Destroy();
+						break;
+				}
+				UE_LOG(LogTemp, Warning, TEXT("%s"), *AddResult.ResultMessage.ToString());
+			}
+			else {
+				UE_LOG(LogTemp, Warning, TEXT("Player Inventory is null!"));
+			}			
+		}
+		else {
+			UE_LOG(LogTemp, Warning, TEXT("Pickup Internal Reference is null!"));
 		}
 	}
 }
