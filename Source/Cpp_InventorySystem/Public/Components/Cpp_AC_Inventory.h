@@ -89,7 +89,7 @@ public:
 	UItemBase* FindNextPartialStack(UItemBase* InItem) const;
 
 	UFUNCTION(Category = "Inventory")
-	void RemoveSingleInstanceOfItem(UItemBase* InItem);
+	void RemoveSingleInstanceOfItem(UItemBase* ItemToRemove);
 	UFUNCTION(Category = "Inventory")
 	int32 RemoveAmountOfItem(UItemBase* InItem, const int32 AmountToRemove);
 	UFUNCTION(Category = "Inventory")

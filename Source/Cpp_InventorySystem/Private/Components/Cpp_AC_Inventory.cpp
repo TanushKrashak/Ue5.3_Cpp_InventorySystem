@@ -62,8 +62,9 @@ UItemBase* UCpp_AC_Inventory::FindNextPartialStack(UItemBase* InItem) const {
 	return nullptr;
 }
 
-void UCpp_AC_Inventory::RemoveSingleInstanceOfItem(UItemBase* InItem) {
-
+void UCpp_AC_Inventory::RemoveSingleInstanceOfItem(UItemBase* ItemToRemove) {
+	InventoryContents.RemoveSingle(ItemToRemove);
+	OnInventoryUpdated.Broadcast();
 }
 
 int32 UCpp_AC_Inventory::RemoveAmountOfItem(UItemBase* InItem, const int32 AmountToRemove) {
