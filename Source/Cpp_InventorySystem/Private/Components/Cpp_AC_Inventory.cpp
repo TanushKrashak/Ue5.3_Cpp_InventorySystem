@@ -94,8 +94,9 @@ int32 UCpp_AC_Inventory::CalculateWeightAddAmount(UItemBase* InItem, int32 AddAm
 	return WeightMaxAddAmount;
 }
 
-int32 UCpp_AC_Inventory::CalculateNumberForFullStack(UItemBase* InItem, int32 InitialAddAmount) {
-
+int32 UCpp_AC_Inventory::CalculateNumberForFullStack(UItemBase* StackableItem, int32 InitialAddAmount) {
+	const int32 AddAmountToMakeFullStack = StackableItem->ItemNumericData.MaxStackSize - StackableItem->Quantity;
+	return FMath::Min(InitialAddAmount, AddAmountToMakeFullStack);
 }
 
 FItemAddResult UCpp_AC_Inventory::HandleAddItem(UItemBase* InItem) {
