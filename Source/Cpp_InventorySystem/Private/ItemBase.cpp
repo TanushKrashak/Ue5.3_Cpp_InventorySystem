@@ -22,6 +22,7 @@ UItemBase* UItemBase::CreateItemCopy()
         NewItem->ItemTextData = ItemTextData;
         NewItem->ItemNumericData = ItemNumericData;
         NewItem->ItemAssetData = ItemAssetData;
+		NewItem->bIsCopy = true;
     }
     return NewItem;
 }

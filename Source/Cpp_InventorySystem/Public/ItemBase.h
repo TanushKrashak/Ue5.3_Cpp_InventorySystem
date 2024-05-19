@@ -51,6 +51,9 @@ public:
 	UPROPERTY(VisibleAnywhere, Category="Item")
 	FItemAssetData ItemAssetData;
 
+	bool bIsCopy;
+	bool bIsPickup;
+
 
 	//=========================================================================================================================
 	// FUNCTIONS
@@ -61,6 +64,8 @@ public:
 
 	UItemBase* CreateItemCopy();
 	
+	void ResetItemFlags();
+
 	// Getters
 	UFUNCTION(Category = "Item")
 	FORCEINLINE float GetItemStackWeight() const { return Quantity * ItemNumericData.Weight; };
