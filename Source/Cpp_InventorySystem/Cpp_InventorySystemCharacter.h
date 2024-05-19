@@ -63,6 +63,9 @@ public:
 
 	FORCEINLINE UCpp_AC_Inventory* GetInventory() const { return PlayerInventory; }
 
+	// Called when the character interacts with an interactable to update the interaction widget
+	void UpdateInteractionWidget() const;
+
 protected:
 	//=========================================================================================================================
 	// PROPERTIES & VARIABLES

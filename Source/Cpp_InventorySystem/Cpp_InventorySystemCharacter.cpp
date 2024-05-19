@@ -90,6 +90,12 @@ void ACpp_InventorySystemCharacter::Tick(float DeltaSeconds) {
 	}
 }
 
+void ACpp_InventorySystemCharacter::UpdateInteractionWidget() const {
+	if(IsValid(TargetInteractable.GetObject())) {
+		HUD->UpdateInteractionWidget(&TargetInteractable->InteractableData);
+	}
+}
+
 void ACpp_InventorySystemCharacter::PerformInteractionCheck() {
 	InteractionData.LastInteractionCheckTime = GetWorld()->GetTimeSeconds();
 
