@@ -1,9 +1,9 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
 
 // Game
 #include "Cpp_InventorySystemCharacter.h"
 #include "TimerManager.h"
 #include "UI/Cpp_InventoryHUD.h"
+#include "Components/Cpp_AC_Inventory.h"
 
 // Engine
 #include "EnhancedInputComponent.h"
@@ -50,6 +50,10 @@ ACpp_InventorySystemCharacter::ACpp_InventorySystemCharacter()
 	CameraBoom->SetupAttachment(RootComponent);
 	CameraBoom->TargetArmLength = 400.0f; // The camera follows at this distance behind the character	
 	CameraBoom->bUsePawnControlRotation = true; // Rotate the arm based on the controller
+
+	PlayerInventory = CreateDefaultSubobject<UCpp_AC_Inventory>(TEXT("PlayerInventory"));
+	PlayerInventory->SetSlotsCapacity(20);
+	PlayerInventory->SetWeightCapacity(50.0f);
 
 	// Create a follow camera
 	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
