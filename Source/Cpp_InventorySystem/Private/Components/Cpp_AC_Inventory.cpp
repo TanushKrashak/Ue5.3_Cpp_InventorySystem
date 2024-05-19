@@ -105,7 +105,34 @@ int32 UCpp_AC_Inventory::CalculateNumberForFullStack(UItemBase* StackableItem, i
 }
 
 FItemAddResult UCpp_AC_Inventory::HandleNonStackableItems(UItemBase* InItem, int32 AddAmount) {
+	// Check if input item has valid weight
+	if(FMath::IsNearlyZero(InItem->GetItemSingleWeight()) || InItem->GetItemSingleWeight() < 0) {
+		// return added no items
+		return FItemAddResult::AddedNone(FText::Format(
+				FText::FromString("Could not add {item} to the inventory. Item Has No Weight!"), 
+					InItem->ItemTextData.ItemName));
+	}
 
+	// Will item weight exceed inventory weight capacity?
+	if(InventoryTotalWeight + InItem->GetItemSingleWeight() > GetWeightCapacity()) {
+		// return added no items
+		return FItemAddResult::AddedNone(FText::Format(
+			FText::FromString("Could not add {item} to the inventory. Item overflows weight limit!"),
+			InItem->ItemTextData.ItemName));
+	}
+
+	// Will inventory exceed capacity?
+	if(InventoryContents.Num() + 1 > InventorySlotsCapacity) {
+		return FItemAddResult::AddedNone(FText::Format(
+			FText::FromString("Could not add {item} to the inventory. No Free Inventory Slot!"),
+			InItem->ItemTextData.ItemName));
+	}
+
+	AddNewItem(InItem, AddAmount);
+	// return added all items
+	return FItemAddResult::AddedAll(AddAmount, FText::Format(
+		FText::FromString("Successfully added {item} to the inventory!"),
+		InItem->ItemTextData.ItemName));
 }
 
 int32 UCpp_AC_Inventory::HandleStackableItems(UItemBase* InItem, int32 AddAmount) {
