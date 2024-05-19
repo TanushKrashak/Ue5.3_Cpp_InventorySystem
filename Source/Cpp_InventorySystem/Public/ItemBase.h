@@ -7,6 +7,8 @@
 #include "../ItemDataStructs.h"
 #include "ItemBase.generated.h"
 
+class UCpp_AC_Inventory;
+
 /**
  * 
  */
@@ -20,8 +22,8 @@ public:
 	// PROPERTIES & VARIABLES
 	//=========================================================================================================================
 
-	/*UPROPERTY(VisibleAnywhere, Category = "Item Data")
-	UInventoryComponent* OwningInventory;*/
+	UPROPERTY(VisibleAnywhere, Category = "Item Data")
+		UCpp_AC_Inventory* OwningInventory;
 
 	// UiMin and UiMax are used to min and max the value of the Quantity
 	UPROPERTY(VisibleAnywhere, Category="Item")

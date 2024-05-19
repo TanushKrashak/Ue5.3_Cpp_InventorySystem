@@ -2,6 +2,7 @@
 
 
 #include "ItemBase.h"
+#include "Components/Cpp_AC_Inventory.h"
 
 UItemBase::UItemBase() {
 
@@ -29,11 +30,11 @@ void UItemBase::SetQuantity(const int32 NewQuantity) {
 		// Clamp the quantity to be between 0 and the max stack size only if the item is stackable
 		Quantity = FMath::Clamp(NewQuantity, 0, ItemNumericData.bIsStackable ? ItemNumericData.MaxStackSize : 1);
 
-		/*if (OwningInventory) {
-			if (Quantity == 0) {
-				OwningInventory->RemoveItem(this);
+		if(OwningInventory) {
+			if(Quantity == 0) {
+				OwningInventory->RemoveSingleInstanceOfItem(this);
 			}
-		}*/
+		}
 	}
 }
 
