@@ -30,6 +30,7 @@ class UCameraComponent;
 class UInputMappingContext;
 class UInputAction;
 struct FInputActionValue;
+class UCpp_AC_Inventory;
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
 
@@ -59,6 +60,8 @@ public:
 
 	// Returns whether the character is currently interacting with an interactable
 	FORCEINLINE bool IsInteracting() const { return GetWorldTimerManager().IsTimerActive(TimerHandleInteraction); }
+
+	FORCEINLINE UCpp_AC_Inventory* GetInventory() const { return PlayerInventory; }
 
 protected:
 	//=========================================================================================================================
@@ -100,6 +103,8 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category = "Character | Interaction")
 	TScriptInterface<IInteractionInterface> TargetInteractable;
 
+	UPROPERTY(VisibleAnywhere, Category = "Character | Inventory")
+	UCpp_AC_Inventory* PlayerInventory;
 
 	float InteractionFrequency;
 	
