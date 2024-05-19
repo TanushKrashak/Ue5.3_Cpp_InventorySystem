@@ -43,7 +43,24 @@ UItemBase* UCpp_AC_Inventory::FindNextItemByID(UItemBase* InItem) const {
 }
 
 UItemBase* UCpp_AC_Inventory::FindNextPartialStack(UItemBase* InItem) const {
-
+	// Summary Of If Statement:
+	// Result is a pointer to the element type of the array UItemBase.
+	// FindByPredicate is used to find the first element that satisfies the predicate.
+	// FindByPredicate returns a pointer to the element type of the array UItemBase.
+	// Lambda function is used to check if the ID of both are the same AND
+	// if the item is not a full stack which means it can be added to
+	// [&InItem] is the capture list for the lambda function which 
+	// means it can access the InItem variable to compare it with the InventoryItem.
+	// If the result is not null, return the result.
+	if(const TArray<TObjectPtr<UItemBase>>::ElementType* Result = 
+	   InventoryContents.FindByPredicate([&InItem](const UItemBase* InventoryItem) 
+		{
+			return InventoryItem->ID == InItem->ID && !InventoryItem->IsFullItemStack();
+	    } 
+	   )) {
+		return *Result;
+	}
+	return nullptr;
 }
 
 void UCpp_AC_Inventory::RemoveSingleInstanceOfItem(UItemBase* InItem) {
