@@ -87,14 +87,6 @@ void UCpp_AC_Inventory::SplitExistingStack(UItemBase* InItem, const int32 Amount
 	}
 }
 
-FItemAddResult UCpp_AC_Inventory::HandleNonStackableItems(UItemBase* InItem, int32 AddAmount) {
-
-}
-
-int32 UCpp_AC_Inventory::HandleStackableItems(UItemBase* InItem, int32 AddAmount) {
-
-}
-
 int32 UCpp_AC_Inventory::CalculateWeightAddAmount(UItemBase* InItem, int32 AddAmount) {
 	// Calculate the amount of weight that can be added to the inventory.
 	// FloorToInt is used to round down the result of the division
@@ -112,8 +104,36 @@ int32 UCpp_AC_Inventory::CalculateNumberForFullStack(UItemBase* StackableItem, i
 	return FMath::Min(InitialAddAmount, AddAmountToMakeFullStack);
 }
 
-FItemAddResult UCpp_AC_Inventory::HandleAddItem(UItemBase* InItem) {
+FItemAddResult UCpp_AC_Inventory::HandleNonStackableItems(UItemBase* InItem, int32 AddAmount) {
 
+}
+
+int32 UCpp_AC_Inventory::HandleStackableItems(UItemBase* InItem, int32 AddAmount) {
+
+}
+
+FItemAddResult UCpp_AC_Inventory::HandleAddItem(UItemBase* InItem) {
+	if(GetOwner()) {
+		const int32 InitialRequestedAddAmount = InItem->Quantity;
+
+		// Handle Non-Stackable Items
+		if(!InItem->ItemNumericData.bIsStackable) {
+			return HandleNonStackableItems(InItem, InitialRequestedAddAmount);
+		}
+
+		// Handle Stackable Items
+		const int32 StackableAmountAdded = HandleStackableItems(InItem, InitialRequestedAddAmount);
+
+		if(StackableAmountAdded == InitialRequestedAddAmount) {
+			// Return added all items
+		}
+		else if(StackableAmountAdded < InitialRequestedAddAmount && StackableAmountAdded > 0) {
+			// Return added some items
+		}
+		else {
+			// Return added no items
+		}
+	}
 }
 
 void UCpp_AC_Inventory::AddNewItem(UItemBase* InItem, const int32 AddAmount) {
