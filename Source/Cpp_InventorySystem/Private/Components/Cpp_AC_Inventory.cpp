@@ -16,11 +16,69 @@ UCpp_AC_Inventory::UCpp_AC_Inventory() {
 void UCpp_AC_Inventory::BeginPlay() {
 	Super::BeginPlay();
 
-	
+
 }
 
 void UCpp_AC_Inventory::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-	
+
+}
+
+
+
+UItemBase* UCpp_AC_Inventory::FindMatchingItem(UItemBase* InItem) const {
+	if(InItem && InventoryContents.Contains(InItem)) {
+		return InItem;		
+	}
+	return nullptr;
+}
+
+UItemBase* UCpp_AC_Inventory::FindNextItemByID(UItemBase* InItem) const {
+	// Only works as overloaded operator is implemented in UItemBase for the == operator.
+	// Element Type is used to get the type of the array elements.
+	if(InItem && const TArray<TObjectPtr<UItemBase>>::ElementType* Result = InventoryContents.FindByKey(InItem)) {
+		return *Result;
+	}
+	return nullptr;
+}
+
+UItemBase* UCpp_AC_Inventory::FindNextPartialStack(UItemBase* InItem) const {
+
+}
+
+void UCpp_AC_Inventory::RemoveSingleInstanceOfItem(UItemBase* InItem) {
+
+}
+
+int32 UCpp_AC_Inventory::RemoveAmountOfItem(UItemBase* InItem, const int32 AmountToRemove) {
+
+}
+
+void UCpp_AC_Inventory::SplitExistingStack(UItemBase* InItem, const int32 AmountToSplit) {
+
+}
+
+FItemAddResult UCpp_AC_Inventory::HandleNonStackableItems(UItemBase* InItem, int32 AddAmount) {
+
+}
+
+int32 UCpp_AC_Inventory::HandleStackableItems(UItemBase* InItem, int32 AddAmount) {
+
+}
+
+int32 UCpp_AC_Inventory::CalculateWeightAddAmount(UItemBase* InItem, int32 AddAmount) {
+
+}
+
+int32 UCpp_AC_Inventory::CalculateNumberForFullStack(UItemBase* InItem, int32 InitialAddAmount) {
+
+}
+
+FItemAddResult UCpp_AC_Inventory::HandleAddItem(UItemBase* InItem) {
+
+}
+
+void UCpp_AC_Inventory::AddNewItem(UItemBase* InItem, const int32 AddAmount) {
+
 }
 
