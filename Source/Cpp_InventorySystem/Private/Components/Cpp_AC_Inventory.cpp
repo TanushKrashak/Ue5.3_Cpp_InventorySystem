@@ -152,13 +152,19 @@ FItemAddResult UCpp_AC_Inventory::HandleAddItem(UItemBase* InItem) {
 		const int32 StackableAmountAdded = HandleStackableItems(InItem, InitialRequestedAddAmount);
 
 		if(StackableAmountAdded == InitialRequestedAddAmount) {
-			// Return added all items
+			return FItemAddResult::AddedAll(InitialRequestedAddAmount, FText::Format(
+				FText::FromString("Successfully added {qty} {item} to the inventory!"),
+				InItem->ItemTextData.ItemName, InItem->ItemTextData.ItemName));
 		}
 		else if(StackableAmountAdded < InitialRequestedAddAmount && StackableAmountAdded > 0) {
-			// Return added some items
+			return FItemAddResult::AddedSome(StackableAmountAdded, FText::Format(
+				FText::FromString("Could not add all {item} to the inventory. Added {qty} {item} instead!"),
+				InItem->ItemTextData.ItemName, InItem->ItemTextData.ItemName));
 		}
 		else {
-			// Return added no items
+			return FItemAddResult::AddedNone(FText::Format(
+				FText::FromString("Could not add {item} to the inventory. No Remaining Slots / Invalid Item!"),
+				InItem->ItemTextData.ItemName));
 		}
 	}
 }
