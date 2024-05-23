@@ -149,7 +149,7 @@ FItemAddResult UCpp_AC_Inventory::HandleAddItem(UItemBase* InItem) {
 
 		// Handle Non-Stackable Items
 		if(!InItem->ItemNumericData.bIsStackable) {
-			return HandleNonStackableItems(InItem, InitialRequestedAddAmount);
+			return HandleNonStackableItems(InItem);
 		}
 
 		// Handle Stackable Items
