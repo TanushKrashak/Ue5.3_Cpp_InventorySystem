@@ -112,7 +112,7 @@ FItemAddResult UCpp_AC_Inventory::HandleNonStackableItems(UItemBase* InItem, int
 	if(FMath::IsNearlyZero(InItem->GetItemSingleWeight()) || InItem->GetItemSingleWeight() < 0) {
 		// return added no items
 		return FItemAddResult::AddedNone(FText::Format(
-				FText::FromString("Could not add {item} to the inventory. Item Has No Weight!"), 
+				FText::FromString("Could not add {0} to the inventory. Item Has No Weight!"), 
 					InItem->ItemTextData.ItemName));
 	}
 
@@ -120,21 +120,21 @@ FItemAddResult UCpp_AC_Inventory::HandleNonStackableItems(UItemBase* InItem, int
 	if(InventoryTotalWeight + InItem->GetItemSingleWeight() > GetWeightCapacity()) {
 		// return added no items
 		return FItemAddResult::AddedNone(FText::Format(
-			FText::FromString("Could not add {item} to the inventory. Item overflows weight limit!"),
+			FText::FromString("Could not add {0} to the inventory. Item overflows weight limit!"),
 			InItem->ItemTextData.ItemName));
 	}
 
 	// Will inventory exceed capacity?
 	if(InventoryContents.Num() + 1 > InventorySlotsCapacity) {
 		return FItemAddResult::AddedNone(FText::Format(
-			FText::FromString("Could not add {item} to the inventory. No Free Inventory Slot!"),
+			FText::FromString("Could not add {0} to the inventory. No Free Inventory Slot!"),
 			InItem->ItemTextData.ItemName));
 	}
 
 	AddNewItem(InItem, AddAmount);
 	// return added all items
 	return FItemAddResult::AddedAll(AddAmount, FText::Format(
-		FText::FromString("Successfully added {item} to the inventory!"),
+		FText::FromString("Successfully added {0} to the inventory!"),
 		InItem->ItemTextData.ItemName));
 }
 
@@ -157,17 +157,17 @@ FItemAddResult UCpp_AC_Inventory::HandleAddItem(UItemBase* InItem) {
 
 		if(StackableAmountAdded == InitialRequestedAddAmount) {
 			return FItemAddResult::AddedAll(InitialRequestedAddAmount, FText::Format(
-				FText::FromString("Successfully added {qty} {item} to the inventory!"),
-				InItem->ItemTextData.ItemName, InItem->ItemTextData.ItemName));
+				FText::FromString("Successfully added {0} {1} to the inventory!"),
+				InItem->ItemTextData.ItemName, StackableAmountAdded));
 		}
 		else if(StackableAmountAdded < InitialRequestedAddAmount && StackableAmountAdded > 0) {
 			return FItemAddResult::AddedSome(StackableAmountAdded, FText::Format(
-				FText::FromString("Could not add all {item} to the inventory. Added {qty} {item} instead!"),
-				InItem->ItemTextData.ItemName, InItem->ItemTextData.ItemName));
+				FText::FromString("Could not add all {0} to the inventory. Added {1} {0} instead!"),
+				InItem->ItemTextData.ItemName, StackableAmountAdded));
 		}
 		else {
 			return FItemAddResult::AddedNone(FText::Format(
-				FText::FromString("Could not add {item} to the inventory. No Remaining Slots / Invalid Item!"),
+				FText::FromString("Could not add {0} to the inventory. No Remaining Slots / Invalid Item!"),
 				InItem->ItemTextData.ItemName));
 		}
 	}
