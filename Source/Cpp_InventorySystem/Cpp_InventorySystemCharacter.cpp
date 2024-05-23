@@ -81,7 +81,6 @@ void ACpp_InventorySystemCharacter::BeginPlay() {
 
 	HUD = Cast<ACpp_InventoryHUD>(GetWorld()->GetFirstPlayerController()->GetHUD());
 }
-
 void ACpp_InventorySystemCharacter::Tick(float DeltaSeconds) {
 	Super::Tick(DeltaSeconds);
 
@@ -90,12 +89,40 @@ void ACpp_InventorySystemCharacter::Tick(float DeltaSeconds) {
 	}
 }
 
+void ACpp_InventorySystemCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+{
+	// Set up action bindings
+	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent)) {
+		
+		// Jumping
+		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &ACharacter::Jump);
+		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
+
+		// Interacting
+		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Started, this, &ACpp_InventorySystemCharacter::BeginInteract);
+		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Completed, this, &ACpp_InventorySystemCharacter::EndInteract);
+		
+		// Moving
+		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ACpp_InventorySystemCharacter::Move);
+
+		// Looking
+		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ACpp_InventorySystemCharacter::Look);
+
+		// Toggle Menu
+		EnhancedInputComponent->BindAction(ToggleMenuAction, ETriggerEvent::Started, this, &ACpp_InventorySystemCharacter::ToggleMenu);
+	}
+	else
+	{
+		UE_LOG(LogTemplateCharacter, Error, TEXT("'%s' Failed to find an Enhanced Input component! This template is built to use the Enhanced Input system. If you intend to use the legacy system, then you will need to update this C++ file."), *GetNameSafe(this));
+	}
+}
+
+
 void ACpp_InventorySystemCharacter::UpdateInteractionWidget() const {
 	if(IsValid(TargetInteractable.GetObject())) {
 		HUD->UpdateInteractionWidget(&TargetInteractable->InteractableData);
 	}
 }
-
 void ACpp_InventorySystemCharacter::PerformInteractionCheck() {
 	InteractionData.LastInteractionCheckTime = GetWorld()->GetTimeSeconds();
 
@@ -127,7 +154,6 @@ void ACpp_InventorySystemCharacter::PerformInteractionCheck() {
 	}
 	NoInteractableFound();
 }
-
 void ACpp_InventorySystemCharacter::FoundInteractable(AActor* NewInteractable) {
 	// If char is already interacting with something, end the interaction
 	if (IsInteracting()) {
@@ -147,7 +173,6 @@ void ACpp_InventorySystemCharacter::FoundInteractable(AActor* NewInteractable) {
 	// Begin focus on new interactable
 	TargetInteractable->BeginFocus();
 }
-
 void ACpp_InventorySystemCharacter::NoInteractableFound() {
 	// If char is interacting with something, end the interaction
 	if(IsInteracting()) {
@@ -167,7 +192,6 @@ void ACpp_InventorySystemCharacter::NoInteractableFound() {
 		TargetInteractable = nullptr;
 	}
 }
-
 void ACpp_InventorySystemCharacter::BeginInteract() {
 	// Verify nothing has changed since the interaction check
 	PerformInteractionCheck();
@@ -190,7 +214,6 @@ void ACpp_InventorySystemCharacter::BeginInteract() {
 		}
 	}
 }
-
 void ACpp_InventorySystemCharacter::EndInteract() {
 	// Clear the timer
 	GetWorldTimerManager().ClearTimer(TimerHandleInteraction);
@@ -200,7 +223,6 @@ void ACpp_InventorySystemCharacter::EndInteract() {
 	}
 	
 }
-
 void ACpp_InventorySystemCharacter::Interact() {
 	// Clear the timer
 	GetWorldTimerManager().ClearTimer(TimerHandleInteraction);
@@ -210,30 +232,8 @@ void ACpp_InventorySystemCharacter::Interact() {
 	}
 }
 
-// Input Actions
-void ACpp_InventorySystemCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	// Set up action bindings
-	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent)) {
-		
-		// Jumping
-		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &ACharacter::Jump);
-		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
-
-		// Interacting
-		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Started, this, &ACpp_InventorySystemCharacter::BeginInteract);
-		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Completed, this, &ACpp_InventorySystemCharacter::EndInteract);
-		
-		// Moving
-		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ACpp_InventorySystemCharacter::Move);
-
-		// Looking
-		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ACpp_InventorySystemCharacter::Look);
-	}
-	else
-	{
-		UE_LOG(LogTemplateCharacter, Error, TEXT("'%s' Failed to find an Enhanced Input component! This template is built to use the Enhanced Input system. If you intend to use the legacy system, then you will need to update this C++ file."), *GetNameSafe(this));
-	}
+void ACpp_InventorySystemCharacter::ToggleMenu() {
+	HUD->ToggleMenu();
 }
 
 void ACpp_InventorySystemCharacter::Move(const FInputActionValue& Value)
@@ -258,7 +258,6 @@ void ACpp_InventorySystemCharacter::Move(const FInputActionValue& Value)
 		AddMovementInput(RightDirection, MovementVector.X);
 	}
 }
-
 void ACpp_InventorySystemCharacter::Look(const FInputActionValue& Value)
 {
 	// input is a Vector2D

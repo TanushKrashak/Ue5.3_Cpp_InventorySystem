@@ -102,6 +102,10 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* InteractAction;
 
+	// Toggle Menu Input Action
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputAction* ToggleMenuAction;
+
 	// The Character | is for organization purposes
 	UPROPERTY(VisibleAnywhere, Category = "Character | Interaction")
 	TScriptInterface<IInteractionInterface> TargetInteractable;
@@ -122,6 +126,13 @@ protected:
 	// FUNCTIONS
 	//=========================================================================================================================
 
+	// To add mapping context
+	virtual void BeginPlay();
+	virtual void Tick(float DeltaSeconds) override;
+
+	// APawn interface	
+	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
 	void PerformInteractionCheck();
 	void FoundInteractable(AActor* NewInteractable);
 	void NoInteractableFound();
@@ -129,14 +140,13 @@ protected:
 	void EndInteract();
 	void Interact();
 
-	void Move(const FInputActionValue& Value);
-	void Look(const FInputActionValue& Value);			
-	// APawn interface
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-	
-	// To add mapping context
-	virtual void BeginPlay();
+	void ToggleMenu();
 
-	virtual void Tick(float DeltaSeconds) override;
+	void Move(const FInputActionValue& Value);
+	void Look(const FInputActionValue& Value);		
+
+
+	
+
 };
 
