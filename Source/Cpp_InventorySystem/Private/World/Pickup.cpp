@@ -5,6 +5,8 @@
 #include "ItemBase.h"
 #include "Engine/DataTable.h"
 #include "Components/Cpp_AC_Inventory.h"
+#include "../Cpp_InventorySystemCharacter.h"
+
 
 
 // Sets default values

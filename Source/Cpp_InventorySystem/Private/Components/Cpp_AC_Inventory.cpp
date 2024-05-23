@@ -2,6 +2,7 @@
 
 
 #include "Components/Cpp_AC_Inventory.h"
+#include "ItemBase.h"
 
 // Constructor for the class.
 UCpp_AC_Inventory::UCpp_AC_Inventory() {
@@ -36,22 +37,24 @@ UItemBase* UCpp_AC_Inventory::FindMatchingItem(UItemBase* InItem) const {
 UItemBase* UCpp_AC_Inventory::FindNextItemByID(UItemBase* InItem) const {
 	// Only works as overloaded operator is implemented in UItemBase for the == operator.
 	// Element Type is used to get the type of the array elements.
-	if(InItem && const TArray<TObjectPtr<UItemBase>>::ElementType* Result = InventoryContents.FindByKey(InItem)) {
-		return *Result;
+	if(InItem) {
+		const TArray<TObjectPtr<UItemBase>>::ElementType* Result = InventoryContents.FindByKey(InItem);
+		if (Result)
+			return *Result;
 	}
 	return nullptr;
 }
 
 UItemBase* UCpp_AC_Inventory::FindNextPartialStack(UItemBase* InItem) const {
-	// Summary Of If Statement:
-	// Result is a pointer to the element type of the array UItemBase.
-	// FindByPredicate is used to find the first element that satisfies the predicate.
-	// FindByPredicate returns a pointer to the element type of the array UItemBase.
-	// Lambda function is used to check if the ID of both are the same AND
-	// if the item is not a full stack which means it can be added to
-	// [&InItem] is the capture list for the lambda function which 
-	// means it can access the InItem variable to compare it with the InventoryItem.
-	// If the result is not null, return the result.
+	/*Summary Of If Statement :
+	Result is a pointer to the element type of the array UItemBase.
+	FindByPredicate is used to find the first element that satisfies the predicate.
+	FindByPredicate returns a pointer to the element type of the array UItemBase.
+	Lambda function is used to check if the ID of both are the same AND
+	if the item is not a full stack which means it can be added to
+	[&InItem] is the capture list for the lambda function which
+	means it can access the InItem variable to compare it with the InventoryItem.
+	If the result is not null, return the result */
 	if(const TArray<TObjectPtr<UItemBase>>::ElementType* Result = 
 		InventoryContents.FindByPredicate([&InItem](const UItemBase* InventoryItem) {
 				return InventoryItem->ID == InItem->ID && !InventoryItem->IsFullItemStack();
@@ -137,6 +140,7 @@ FItemAddResult UCpp_AC_Inventory::HandleNonStackableItems(UItemBase* InItem, int
 
 int32 UCpp_AC_Inventory::HandleStackableItems(UItemBase* InItem, int32 AddAmount) {
 
+	return 0;
 }
 
 FItemAddResult UCpp_AC_Inventory::HandleAddItem(UItemBase* InItem) {
@@ -167,6 +171,7 @@ FItemAddResult UCpp_AC_Inventory::HandleAddItem(UItemBase* InItem) {
 				InItem->ItemTextData.ItemName));
 		}
 	}
+	return FItemAddResult::AddedNone(FText::FromString("Could not add item to the inventory. No Owner Found!"));
 }
 
 void UCpp_AC_Inventory::AddNewItem(UItemBase* InItem, const int32 AddAmount) {
