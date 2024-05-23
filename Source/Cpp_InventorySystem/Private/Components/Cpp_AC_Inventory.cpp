@@ -107,7 +107,7 @@ int32 UCpp_AC_Inventory::CalculateNumberForFullStack(UItemBase* StackableItem, i
 	return FMath::Min(InitialAddAmount, AddAmountToMakeFullStack);
 }
 
-FItemAddResult UCpp_AC_Inventory::HandleNonStackableItems(UItemBase* InItem, int32 AddAmount) {
+FItemAddResult UCpp_AC_Inventory::HandleNonStackableItems(UItemBase* InItem) {
 	// Check if input item has valid weight
 	if(FMath::IsNearlyZero(InItem->GetItemSingleWeight()) || InItem->GetItemSingleWeight() < 0) {
 		// return added no items
@@ -131,9 +131,9 @@ FItemAddResult UCpp_AC_Inventory::HandleNonStackableItems(UItemBase* InItem, int
 			InItem->ItemTextData.ItemName));
 	}
 
-	AddNewItem(InItem, AddAmount);
+	AddNewItem(InItem, 1);
 	// return added all items
-	return FItemAddResult::AddedAll(AddAmount, FText::Format(
+	return FItemAddResult::AddedAll(1, FText::Format(
 		FText::FromString("Successfully added {0} to the inventory!"),
 		InItem->ItemTextData.ItemName));
 }

@@ -135,7 +135,7 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	FItemAddResult HandleNonStackableItems(UItemBase* InItem, int32 AddAmount);
+	FItemAddResult HandleNonStackableItems(UItemBase* InItem);
 	int32 HandleStackableItems(UItemBase* InItem, int32 AddAmount);
 	int32 CalculateWeightAddAmount(UItemBase* InItem, int32 AddAmount);
 	int32 CalculateNumberForFullStack(UItemBase* StackableItem, int32 InitialAddAmount);
