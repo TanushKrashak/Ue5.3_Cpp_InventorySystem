@@ -42,6 +42,21 @@ void ACpp_InventoryHUD::HideMenu() {
 
 }
 
+void ACpp_InventoryHUD::ToggleMenu() {
+	if (bIsMenuVisible) {
+		HideMenu();
+		const FInputModeGameOnly InputMode;
+		GetOwningPlayerController()->SetInputMode(InputMode);
+		GetOwningPlayerController()->SetShowMouseCursor(false);
+	}
+	else {
+		DisplayMenu();
+		const FInputModeGameAndUI InputMode;
+		GetOwningPlayerController()->SetInputMode(InputMode);
+		GetOwningPlayerController()->SetShowMouseCursor(true);
+	}
+}
+
 void ACpp_InventoryHUD::ShowInteractionWidget() {
 	if(InteractionWidget) {
 		InteractionWidget->SetVisibility(ESlateVisibility::Visible);
