@@ -3,7 +3,7 @@
 // Game
 #include "UI/Inventory/Cpp_WGT_InventoryPanel.h"
 #include "../Cpp_InventorySystemCharacter.h"
-#include "UI/Inventory/Cpp_WGT_InventoryItemSlot.h
+#include "UI/Inventory/Cpp_WGT_InventoryItemSlot.h"
 #include "Components/Cpp_AC_Inventory.h"
 
 // Engine
@@ -30,6 +30,7 @@ void UCpp_WGT_InventoryPanel::NativeOnInitialized() {
 bool UCpp_WGT_InventoryPanel::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation) {
 	Super::NativeOnDrop(InGeometry, InDragDropEvent, InOperation);
 
+	return true;
 }
 
 void UCpp_WGT_InventoryPanel::RefreshInventory() {

@@ -6,9 +6,12 @@
 #include "Blueprint/UserWidget.h"
 #include "Cpp_WGT_InventoryPanel.generated.h"
 
+// Forward Declarations
+class UWrapBox;
+class UTextBlock;
 class ACpp_InventorySystemCharacter;
 class UCpp_AC_Inventory;
-class Cpp_WGT_InventoryItemSlot;
+class UCpp_WGT_InventoryItemSlot;
 
 /**
  * 

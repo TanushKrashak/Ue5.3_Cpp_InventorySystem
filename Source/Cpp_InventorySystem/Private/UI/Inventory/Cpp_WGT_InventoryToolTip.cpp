@@ -20,7 +20,7 @@ void UCpp_WGT_InventoryToolTip::NativeConstruct() {
 			TXT_ItemType->SetText(FText::FromString("Consumable"));
 			TXT_DamageValue->SetVisibility(ESlateVisibility::Collapsed);
 			TXT_ArmorRating->SetVisibility(ESlateVisibility::Collapsed);
-			TXT_SellValue->Visibility(ESlateVisibility::Collapsed);
+			TXT_SellValue->SetVisibility(ESlateVisibility::Collapsed);
 			break;
 		case EItemType::Spell:
 			break;
@@ -31,19 +31,19 @@ void UCpp_WGT_InventoryToolTip::NativeConstruct() {
 			TXT_DamageValue->SetVisibility(ESlateVisibility::Collapsed);
 			TXT_ArmorRating->SetVisibility(ESlateVisibility::Collapsed);
 			TXT_Usage->SetVisibility(ESlateVisibility::Collapsed);
-			TXT_SellValue->Visibility(ESlateVisibility::Collapsed);
+			TXT_SellValue->SetVisibility(ESlateVisibility::Collapsed);
 			break;
 		default:
 			break;
 	}
 
-	TXT_ItemName->SetText(FText::FromString(ItemBeingHovered->ItemTextData.ItemName));
+	TXT_ItemName->SetText(ItemBeingHovered->ItemTextData.ItemName);
 	TXT_DamageValue->SetText(FText::AsNumber(ItemBeingHovered->ItemStatistics.DamageValue));
 	TXT_ArmorRating->SetText(FText::AsNumber(ItemBeingHovered->ItemStatistics.ArmorRating));
-	TXT_Usage->SetText(FText::FromString(ItemBeingHovered->ItemTextData.UsageText));
-	TXT_ItemDescription->SetText(FText::FromString(ItemBeingHovered->ItemTextData.ItemDescription));
+	TXT_Usage->SetText(ItemBeingHovered->ItemTextData.UsageText);
+	TXT_ItemDescription->SetText(ItemBeingHovered->ItemTextData.ItemDescription);
 	TXT_SellValue->SetText(FText::AsNumber(ItemBeingHovered->ItemStatistics.SellValue));
-	TXT_StackWeight->SetText(FText::AsNumber(ItemBeingHovered->GetItemStackWeight());
+	TXT_StackWeight->SetText(FText::AsNumber(ItemBeingHovered->GetItemStackWeight()));
 
 	if (ItemBeingHovered->ItemNumericData.bIsStackable) {
 		TXT_MaxStackSize->SetText(FText::AsNumber(ItemBeingHovered->ItemNumericData.MaxStackSize));

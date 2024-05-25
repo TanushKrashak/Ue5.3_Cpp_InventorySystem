@@ -7,10 +7,7 @@
 #include "Components/Border.h"
 #include "Components/Image.h"
 #include "Components/TextBlock.h"
-
-const UE::FieldNotification::IClassDescriptor& UCpp_WGT_InventoryItemSlot::GetFieldNotificationDescriptor() const {
-	
-}
+#include "ItemBase.h"
 
 
 void UCpp_WGT_InventoryItemSlot::NativeOnInitialized() {
@@ -39,7 +36,7 @@ void UCpp_WGT_InventoryItemSlot::NativeConstruct() {
 				Border_Item->SetBrushColor(FLinearColor::Blue);
 				break;
 			case EItemQuality::Epic:
-				Border_Item->SetBrushColor(FLinearColor::Purple);
+				Border_Item->SetBrushColor(FLinearColor(0.5f, 0.0f, 0.5f, 1.0f)); // Solid Purple Color
 				break;
 			case EItemQuality::Legendary:
 				Border_Item->SetBrushColor(FLinearColor(100.0f, 65.0f, 0.0f, 1.0f)); // Solid Orange Color
@@ -57,19 +54,25 @@ void UCpp_WGT_InventoryItemSlot::NativeConstruct() {
 		}
 	}
 }
+
 void UCpp_WGT_InventoryItemSlot::NativeOnDragDetected(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent, UDragDropOperation*& OutOperation) {
 	Super::NativeOnDragDetected(InGeometry, InMouseEvent, OutOperation);
 	
 }
+
 FReply UCpp_WGT_InventoryItemSlot::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) {
 	Super::NativeOnMouseButtonDown(InGeometry, InMouseEvent);
 	
+	return FReply::Handled();
 }
+
 void UCpp_WGT_InventoryItemSlot::NativeOnMouseLeave(const FPointerEvent& InMouseEvent) {
 	Super::NativeOnMouseLeave(InMouseEvent);
 	
 }
+
 bool UCpp_WGT_InventoryItemSlot::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation) {
 	 Super::NativeOnDrop(InGeometry, InDragDropEvent, InOperation);
 
+	 return true;
  }

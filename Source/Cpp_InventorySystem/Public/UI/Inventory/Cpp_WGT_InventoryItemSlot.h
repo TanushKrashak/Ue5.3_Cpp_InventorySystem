@@ -6,8 +6,13 @@
 #include "Blueprint/UserWidget.h"
 #include "Cpp_WGT_InventoryItemSlot.generated.h"
 
+// Forward Declarations
 class UItemBase;
 class UCpp_ItemDragDropOperation;
+class UCpp_WGT_InventoryToolTip;
+class UBorder;
+class UImage;
+class UTextBlock;
 
 /**
  * 
@@ -21,9 +26,9 @@ public:
 	FORCEINLINE void SetItemReference(UItemBase* InItem) { ItemReference = InItem; };
 	FORCEINLINE UItemBase* GetItemReference() const { return ItemReference; };
 	
-
-
-	virtual const UE::FieldNotification::IClassDescriptor& GetFieldNotificationDescriptor() const override;
+	virtual const UE::FieldNotification::IClassDescriptor* GetClassDescriptor() const {
+		return GetClassDescriptor();
+	}
 
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "InventorySlot")

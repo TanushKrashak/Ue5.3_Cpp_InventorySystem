@@ -40,7 +40,7 @@ public:
 	UTextBlock* TXT_ItemDescription;
 
 	UPROPERTY(meta = (BindWidget))
-	UTextBlock* TXT_StackSize;
+	UTextBlock* TXT_MaxStackSize;
 
 	UPROPERTY(meta = (BindWidget))
 	UTextBlock* TXT_SellValue;
