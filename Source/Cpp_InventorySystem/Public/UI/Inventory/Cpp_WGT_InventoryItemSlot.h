@@ -40,13 +40,13 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category = "InventorySlot")
 	UItemBase* ItemReference;
 
-	UPROPERTY(VisibleAnywhere, Category = "InventorySlot")
+	UPROPERTY(VisibleAnywhere, Category = "InventorySlot", meta = (BindWidget))
 	UBorder* Border_Item;
 	
-	UPROPERTY(VisibleAnywhere, Category = "InventorySlot")
+	UPROPERTY(VisibleAnywhere, Category = "InventorySlot", meta = (BindWidget))
 	UImage* IMG_Icon;
 
-	UPROPERTY(VisibleAnywhere, Category = "InventorySlot")
+	UPROPERTY(VisibleAnywhere, Category = "InventorySlot", meta = (BindWidget))
 	UTextBlock* TXT_Quantity;
 
 	virtual void NativeOnInitialized() override;
