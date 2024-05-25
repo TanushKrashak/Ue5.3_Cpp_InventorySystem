@@ -22,6 +22,9 @@ public:
 	FORCEINLINE UItemBase* GetItemReference() const { return ItemReference; };
 	
 
+
+	virtual const UE::FieldNotification::IClassDescriptor& GetFieldNotificationDescriptor() const override;
+
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "InventorySlot")
 	TSubclassOf<UCpp_ItemDragDropOperation> DragItemVisualClass;
@@ -40,4 +43,18 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, Category = "InventorySlot")
 	UTextBlock* TXT_Quantity;
+
+	virtual void NativeOnInitialized() override;
+	virtual void NativeConstruct() override;
+	virtual void NativeOnDragDetected(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent, UDragDropOperation*& OutOperation) override;
+	virtual FReply NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
+	virtual void NativeOnMouseLeave(const FPointerEvent& InMouseEvent) override;
+	virtual bool NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation) override;
+
+
+
+
+
+
+
 };
