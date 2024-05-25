@@ -39,7 +39,7 @@ void UCpp_WGT_InventoryPanel::RefreshInventory() {
 		// Iterate Through Inventory
 		for (UItemBase* const& InventoryItem : InventoryReference->GetInventoryContents()) {
 			UCpp_WGT_InventoryItemSlot* ItemSlot = CreateWidget<UCpp_WGT_InventoryItemSlot>(this, InventoryItemSlotClass);
-			//ItemSlot->SetItemReference(InventoryItem);
+			ItemSlot->SetItemReference(InventoryItem);
 
 			WB_InventoryPanel->AddChildToWrapBox(ItemSlot);
 		}
