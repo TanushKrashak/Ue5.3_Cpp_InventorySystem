@@ -8,7 +8,7 @@
 
 // Forward Declarations
 class UItemBase;
-class UCpp_ItemDragDropOperation;
+class UCpp_WGT_DragItem;
 class UCpp_WGT_InventoryToolTip;
 class UBorder;
 class UImage;
@@ -32,7 +32,7 @@ public:
 
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "InventorySlot")
-	TSubclassOf<UCpp_ItemDragDropOperation> DragItemVisualClass;
+	TSubclassOf<UCpp_WGT_DragItem> DragItemVisualClass;
 
 	UPROPERTY(EditDefaultsOnly, Category = "InventorySlot")
 	TSubclassOf<UCpp_WGT_InventoryToolTip> ToolTipClass;
