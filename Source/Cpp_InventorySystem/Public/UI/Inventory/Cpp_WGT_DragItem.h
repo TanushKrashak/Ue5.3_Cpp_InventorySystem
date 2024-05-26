@@ -6,9 +6,11 @@
 #include "Blueprint/UserWidget.h"
 #include "Cpp_WGT_DragItem.generated.h"
 
-/**
- * 
- */
+// Forward Declarations
+class UBorder;
+class UImage;
+class UTextBlock;
+
 UCLASS()
 class CPP_INVENTORYSYSTEM_API UCpp_WGT_DragItem : public UUserWidget
 {
