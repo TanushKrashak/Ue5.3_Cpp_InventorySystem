@@ -38,8 +38,8 @@ void UCpp_WGT_InventoryItemSlot::NativeConstruct() {
 			case EItemQuality::Epic:
 				Border_Item->SetBrushColor(FLinearColor(0.5f, 0.0f, 0.5f, 1.0f)); // Solid Purple Color
 				break;
-			case EItemQuality::Legendary:
-				Border_Item->SetBrushColor(FLinearColor(100.0f, 65.0f, 0.0f, 1.0f)); // Solid Orange Color
+			case EItemQuality::Legendary:				
+				Border_Item->SetBrushColor(FLinearColor(0.8f, 0.5f, 0.0f, 1.0f)); // Solid Orange Color
 				break;		
 			default: 
 				break;
