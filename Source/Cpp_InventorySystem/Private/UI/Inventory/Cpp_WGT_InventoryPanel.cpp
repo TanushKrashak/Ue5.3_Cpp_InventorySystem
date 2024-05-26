@@ -27,9 +27,6 @@ void UCpp_WGT_InventoryPanel::NativeOnInitialized() {
 			SetInfoText();
 		}
 	}
-	// Add a 10 second timer to refresh the inventory
-	FTimerHandle TimerHandle;
-	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &UCpp_WGT_InventoryPanel::RefreshInventory, 3.0f, true);
 
 }
 
@@ -40,8 +37,7 @@ bool UCpp_WGT_InventoryPanel::NativeOnDrop(const FGeometry& InGeometry, const FD
 }
 
 void UCpp_WGT_InventoryPanel::RefreshInventory() {	
-	if (InventoryReference && InventoryItemSlotClass) {
-		UE_LOG(LogTemp, Warning, TEXT("RefreshInventory Called"));
+	if (InventoryReference && InventoryItemSlotClass) {		
 		WB_InventoryPanel->ClearChildren();		
 		// Iterate Through Inventory
 		for (UItemBase* const& InventoryItem : InventoryReference->GetInventoryContents()) {
