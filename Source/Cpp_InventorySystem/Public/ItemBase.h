@@ -68,10 +68,10 @@ public:
 
 	// Getters
 	UFUNCTION(Category = "Item")
-	FORCEINLINE float GetItemStackWeight() const { return Quantity * ItemNumericData.Weight; };
+	FORCEINLINE float GetItemStackWeight() { return Quantity * ItemNumericData.Weight; };
 
 	UFUNCTION(Category = "Item")
-	FORCEINLINE float GetItemSingleWeight() const { return ItemNumericData.Weight; };
+	FORCEINLINE float GetItemSingleWeight() { return ItemNumericData.Weight; };
 
 	UFUNCTION(Category = "Item")
 	FORCEINLINE bool IsFullItemStack() const { return Quantity == ItemNumericData.MaxStackSize; };

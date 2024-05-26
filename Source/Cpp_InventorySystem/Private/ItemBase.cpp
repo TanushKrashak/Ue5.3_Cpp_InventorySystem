@@ -6,14 +6,14 @@
 
 UItemBase::UItemBase() {
 	bIsCopy = false;
-	bIsPickup = false;
+	bIsPickup = true;
 }
 
 UItemBase* UItemBase::CreateItemCopy()
-{
+{	
     UItemBase* NewItem = NewObject<UItemBase>(GetTransientPackage(), UItemBase::StaticClass());
     if (NewItem) {
-        // Copy the properties
+		UE_LOG(LogTemp, Warning, TEXT("CreateItemCopy Called!"));        
         NewItem->Quantity = Quantity;
         NewItem->ID = ID;
         NewItem->ItemType = ItemType;

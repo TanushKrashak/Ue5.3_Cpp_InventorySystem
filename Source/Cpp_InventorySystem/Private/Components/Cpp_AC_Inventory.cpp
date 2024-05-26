@@ -108,6 +108,7 @@ int32 UCpp_AC_Inventory::CalculateNumberForFullStack(UItemBase* StackableItem, i
 }
 
 FItemAddResult UCpp_AC_Inventory::HandleNonStackableItems(UItemBase* InItem) {
+	
 	// Check if input item has valid weight
 	if(FMath::IsNearlyZero(InItem->GetItemSingleWeight()) || InItem->GetItemSingleWeight() < 0) {
 		// return added no items
@@ -130,7 +131,7 @@ FItemAddResult UCpp_AC_Inventory::HandleNonStackableItems(UItemBase* InItem) {
 			FText::FromString("Could not add {0} to the inventory. No Free Inventory Slot!"),
 			InItem->ItemTextData.ItemName));
 	}
-
+	
 	AddNewItem(InItem, 1);
 	// return added all items
 	return FItemAddResult::AddedAll(1, FText::Format(
@@ -150,8 +151,7 @@ FItemAddResult UCpp_AC_Inventory::HandleAddItem(UItemBase* InItem) {
 		// Handle Non-Stackable Items
 		if(!InItem->ItemNumericData.bIsStackable) {
 			return HandleNonStackableItems(InItem);
-		}
-
+		}		
 		// Handle Stackable Items
 		const int32 StackableAmountAdded = HandleStackableItems(InItem, InitialRequestedAddAmount);
 
@@ -176,11 +176,10 @@ FItemAddResult UCpp_AC_Inventory::HandleAddItem(UItemBase* InItem) {
 
 void UCpp_AC_Inventory::AddNewItem(UItemBase* InItem, const int32 AddAmount) {
 	UItemBase* NewItem;
-
 	if(InItem->bIsCopy || InItem->bIsPickup) {
-		// If the item is already a copy or a world pickup
+		// If the item is already a copy or a world pickup 
 		NewItem = InItem;
-		NewItem->ResetItemFlags();
+		NewItem->ResetItemFlags();		
 	}
 	else {
 		// used for splitting or dragging items from another inventory
@@ -188,9 +187,9 @@ void UCpp_AC_Inventory::AddNewItem(UItemBase* InItem, const int32 AddAmount) {
 	}
 	NewItem->OwningInventory = this;
 	NewItem->SetQuantity(AddAmount);
-
 	InventoryContents.Add(NewItem);
 	InventoryTotalWeight += NewItem->GetItemStackWeight();	
+	// Call the OnInventoryUpdated event to notify other classes that the inventory has been updated.
 	OnInventoryUpdated.Broadcast();
 }
 

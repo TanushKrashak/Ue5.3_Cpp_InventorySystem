@@ -15,7 +15,7 @@ void UCpp_WGT_InventoryItemSlot::NativeOnInitialized() {
 	
 	if (ToolTipClass) {
 		UCpp_WGT_InventoryToolTip* ToolTip = CreateWidget<UCpp_WGT_InventoryToolTip>(this, ToolTipClass);
-		// ToolTip->InventorySlotBeingHovered = this;
+		ToolTip->InventorySlotBeingHovered = this;
 		SetToolTip(ToolTip);
 	}
 

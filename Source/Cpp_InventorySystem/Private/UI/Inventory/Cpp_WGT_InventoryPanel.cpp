@@ -5,6 +5,7 @@
 #include "../Cpp_InventorySystemCharacter.h"
 #include "UI/Inventory/Cpp_WGT_InventoryItemSlot.h"
 #include "Components/Cpp_AC_Inventory.h"
+#include "ItemBase.h"
 
 // Engine
 #include "Components/TextBlock.h"
@@ -20,11 +21,16 @@ void UCpp_WGT_InventoryPanel::NativeOnInitialized() {
 
 	if (PlayerCharacter) {
 		InventoryReference = PlayerCharacter->GetInventory();
-		if (InventoryReference) {
+		if (InventoryReference) {			
+			// Call Refresh Inventory From Binding Delegate Of OnInventoryUpdated
 			InventoryReference->OnInventoryUpdated.AddUObject(this, &UCpp_WGT_InventoryPanel::RefreshInventory);
 			SetInfoText();
 		}
 	}
+	// Add a 10 second timer to refresh the inventory
+	FTimerHandle TimerHandle;
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &UCpp_WGT_InventoryPanel::RefreshInventory, 3.0f, true);
+
 }
 
 bool UCpp_WGT_InventoryPanel::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation) {
@@ -33,18 +39,16 @@ bool UCpp_WGT_InventoryPanel::NativeOnDrop(const FGeometry& InGeometry, const FD
 	return true;
 }
 
-void UCpp_WGT_InventoryPanel::RefreshInventory() {
+void UCpp_WGT_InventoryPanel::RefreshInventory() {	
 	if (InventoryReference && InventoryItemSlotClass) {
-		WB_InventoryPanel->ClearChildren();
-		
+		UE_LOG(LogTemp, Warning, TEXT("RefreshInventory Called"));
+		WB_InventoryPanel->ClearChildren();		
 		// Iterate Through Inventory
 		for (UItemBase* const& InventoryItem : InventoryReference->GetInventoryContents()) {
 			UCpp_WGT_InventoryItemSlot* ItemSlot = CreateWidget<UCpp_WGT_InventoryItemSlot>(this, InventoryItemSlotClass);
-			ItemSlot->SetItemReference(InventoryItem);
-
+			ItemSlot->SetItemReference(InventoryItem);			
 			WB_InventoryPanel->AddChildToWrapBox(ItemSlot);
-		}
-
+		}	
 	}
 }
 
