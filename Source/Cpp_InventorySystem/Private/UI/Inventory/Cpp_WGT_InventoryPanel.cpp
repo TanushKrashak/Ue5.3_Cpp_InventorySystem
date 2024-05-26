@@ -51,13 +51,13 @@ void UCpp_WGT_InventoryPanel::RefreshInventory() {
 
 void UCpp_WGT_InventoryPanel::SetInfoText() const {
 	
-	const FString WeightInfo = {"Weight: " + FString::SanitizeFloat(InventoryReference->GetInventoryTotalWeight()) + "kg / " 
-								FString::SanitizeFloat(InventoryReference->GetWeightCapacity()) + "kg"};
-	TB_WeightInfo->SetText(FText::Format(WeightInfo));
+	const FString WeightInfo = {"Weight: " + FString::SanitizeFloat(InventoryReference->GetInventoryTotalWeight()) + "kg / "
+									  + FString::SanitizeFloat(InventoryReference->GetWeightCapacity()) + "kg"};
+	TB_WeightInfo->SetText(FText::FromString(WeightInfo));
 
 	const FString CapacityInfo = {"Capacity: " + FString::FromInt(InventoryReference->GetInventoryContents().Num()) + "/"
 									  + FString::FromInt(InventoryReference->GetSlotsCapacity())};
-	TB_CapacityInfo->SetText(FText::Format(CapacityInfo));
+	TB_CapacityInfo->SetText(FText::FromString(CapacityInfo));
 }
 
 

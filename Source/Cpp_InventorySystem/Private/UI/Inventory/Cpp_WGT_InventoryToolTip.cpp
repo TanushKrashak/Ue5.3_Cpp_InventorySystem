@@ -20,7 +20,7 @@ void UCpp_WGT_InventoryToolTip::NativeConstruct() {
 				TXT_ItemType->SetText(FText::FromString("Consumable"));
 				TXT_DamageValue->SetVisibility(ESlateVisibility::Collapsed);
 				TXT_ArmorRating->SetVisibility(ESlateVisibility::Collapsed);
-				TXT_MaxStackSizeText->SetVisibility(ESlateVisibility::Collapsed);
+				TXT_MaxStackSize->SetVisibility(ESlateVisibility::Collapsed);
 				break;
 			case EItemType::Spell:
 				break;
@@ -41,14 +41,15 @@ void UCpp_WGT_InventoryToolTip::NativeConstruct() {
 		TXT_ArmorRating->SetText(FText::AsNumber(ItemBeingHovered->ItemStatistics.ArmorRating));
 		TXT_Usage->SetText(ItemBeingHovered->ItemTextData.UsageText);
 		TXT_ItemDescription->SetText(ItemBeingHovered->ItemTextData.ItemDescription);
-		TXT_StackWeight->SetText(FText::AsNumber(ItemBeingHovered->GetItemStackWeight()));
+		const FString WeightInfo = {"Weight: " + FString::SanitizeFloat(ItemBeingHovered->GetItemStackWeight()) + " kg"};
+		TXT_StackWeight->SetText(FText::FromString(WeightInfo));
 
 		if (ItemBeingHovered->ItemNumericData.bIsStackable) {
-			TXT_MaxStackSize->SetText(FText::AsNumber(ItemBeingHovered->ItemNumericData.MaxStackSize));
+			const FString StackInfo = {"Max Stack Size: " + FString::FromInt(ItemBeingHovered->ItemNumericData.MaxStackSize)};
+			TXT_MaxStackSize->SetText(FText::FromString(StackInfo));
 		}
 		else {
-			TXT_MaxStackSize->SetVisibility(ESlateVisibility::Collapsed);
-			TXT_MaxStackSizeText->SetVisibility(ESlateVisibility::Collapsed);
+			TXT_MaxStackSize->SetVisibility(ESlateVisibility::Collapsed);			
 		}
 	}
 }
