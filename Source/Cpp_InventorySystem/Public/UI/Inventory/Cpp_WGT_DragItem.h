@@ -14,4 +14,12 @@ class CPP_INVENTORYSYSTEM_API UCpp_WGT_DragItem : public UUserWidget
 {
 	GENERATED_BODY()
 	
+	UPROPERTY(VisibleAnywhere, Category = "Drag Item", meta = (BindWidget))
+	UBorder* Border_Item;
+	
+	UPROPERTY(VisibleAnywhere, Category = "Drag Item", meta = (BindWidget))
+	UImage* IMG_Icon;
+
+	UPROPERTY(VisibleAnywhere, Category = "Drag Item", meta = (BindWidget))
+	UTextBlock* TXT_Quantity;
 };
