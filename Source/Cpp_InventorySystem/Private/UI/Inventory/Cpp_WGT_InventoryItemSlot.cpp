@@ -8,6 +8,8 @@
 #include "Components/Image.h"
 #include "Components/TextBlock.h"
 #include "ItemBase.h"
+#include "UI/Inventory/Cpp_WGT_DragItem.h"
+#include "UI/Inventory/Cpp_ItemDragDropOperation.h"
 
 
 void UCpp_WGT_InventoryItemSlot::NativeOnInitialized() {
@@ -58,6 +60,21 @@ void UCpp_WGT_InventoryItemSlot::NativeConstruct() {
 void UCpp_WGT_InventoryItemSlot::NativeOnDragDetected(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent, UDragDropOperation*& OutOperation) {
 	Super::NativeOnDragDetected(InGeometry, InMouseEvent, OutOperation);
 	
+	if (DragItemVisualClass) {
+		TObjectPtr<UCpp_WGT_DragItem> DragVisual = CreateWidget<UCpp_WGT_DragItem>(this, DragItemVisualClass);
+		DragVisual->IMG_Icon->SetBrushFromTexture(ItemReference->ItemAssetData.Icon);
+		DragVisual->Border_Item->SetBrushColor(Border_Item->GetBrushColor());
+		DragVisual->TXT_Quantity->SetText(FText::AsNumber(ItemReference->Quantity));
+
+		UCpp_ItemDragDropOperation* DragItemOperation = NewObject<UCpp_ItemDragDropOperation>();
+		DragItemOperation->SourceItem = ItemReference;
+		DragItemOperation->SourceInventory = ItemReference->OwningInventory;
+		
+		DragItemOperation->DefaultDragVisual = DragVisual;
+		DragItemOperation->Pivot = EDragPivot::TopLeft; // Tells it to drag from the top left corner of the widget
+
+		OutOperation = DragItemOperation;
+	}
 }
 
 FReply UCpp_WGT_InventoryItemSlot::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) {

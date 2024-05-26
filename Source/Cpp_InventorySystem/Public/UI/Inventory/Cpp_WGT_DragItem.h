@@ -15,7 +15,8 @@ UCLASS()
 class CPP_INVENTORYSYSTEM_API UCpp_WGT_DragItem : public UUserWidget
 {
 	GENERATED_BODY()
-	
+
+public:
 	UPROPERTY(VisibleAnywhere, Category = "Drag Item", meta = (BindWidget))
 	UBorder* Border_Item;
 	
