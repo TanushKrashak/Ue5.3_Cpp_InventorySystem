@@ -4,6 +4,7 @@
 #include "TimerManager.h"
 #include "UI/Cpp_InventoryHUD.h"
 #include "Components/Cpp_AC_Inventory.h"
+#include "World/Pickup.h"
 
 // Engine
 #include "EnhancedInputComponent.h"
@@ -123,6 +124,27 @@ void ACpp_InventorySystemCharacter::UpdateInteractionWidget() const {
 		HUD->UpdateInteractionWidget(&TargetInteractable->InteractableData);
 	}
 }
+void ACpp_InventorySystemCharacter::DropItem(UItemBase* ItemToDrop, int32 QuantityToDrop) {
+	if (PlayerInventory->FindMatchingItem(ItemToDrop)) {
+		FActorSpawnParameters SpawnParams; // Struct that defines how the actor should be spawned
+		SpawnParams.Owner = this;
+		SpawnParams.bNoFail = true; // always spawn the actor
+		// Adjust the spawn location to avoid collision but always spawn the actor
+		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn; 
+		
+		const FVector SpawnLocation = GetActorLocation() + GetActorForwardVector() * 50.0f;
+		const FTransform SpawnTransform = FTransform(GetActorRotation(), SpawnLocation);
+
+		const int32 RemovedQuantity = PlayerInventory->RemoveAmountOfItem(ItemToDrop, QuantityToDrop);
+
+		APickup* Pickup = GetWorld()->SpawnActor<APickup>(APickup::StaticClass(), SpawnTransform, SpawnParams);
+		Pickup->InitializeDrop(ItemToDrop, RemovedQuantity);
+	}
+	else {
+		UE_LOG(LogTemplateCharacter, Warning, TEXT("Item not found in inventory somehow!"));
+	}
+}
+
 void ACpp_InventorySystemCharacter::PerformInteractionCheck() {
 	InteractionData.LastInteractionCheckTime = GetWorld()->GetTimeSeconds();
 

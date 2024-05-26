@@ -1,4 +1,5 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
+// Copyright Epic Games, Inc. All Rights 
+// Reserved.
 
 #pragma once
 
@@ -65,6 +66,8 @@ public:
 
 	// Called when the character interacts with an interactable to update the interaction widget
 	void UpdateInteractionWidget() const;
+
+	void DropItem(UItemBase* ItemToDrop, int32 QuantityToDrop);
 
 protected:
 	//=========================================================================================================================
