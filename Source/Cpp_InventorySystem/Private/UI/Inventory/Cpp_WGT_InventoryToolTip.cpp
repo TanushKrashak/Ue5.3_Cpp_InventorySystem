@@ -30,8 +30,7 @@ void UCpp_WGT_InventoryToolTip::NativeConstruct() {
 				TXT_ItemType->SetText(FText::FromString("Miscellaneous Item"));
 				TXT_DamageValue->SetVisibility(ESlateVisibility::Collapsed);
 				TXT_ArmorRating->SetVisibility(ESlateVisibility::Collapsed);
-				TXT_Usage->SetVisibility(ESlateVisibility::Collapsed);
-				TXT_MaxStackSizeText->SetVisibility(ESlateVisibility::Collapsed);
+				TXT_Usage->SetVisibility(ESlateVisibility::Collapsed);					
 				break;
 			default:
 				break;
@@ -49,6 +48,7 @@ void UCpp_WGT_InventoryToolTip::NativeConstruct() {
 		}
 		else {
 			TXT_MaxStackSize->SetVisibility(ESlateVisibility::Collapsed);
+			TXT_MaxStackSizeText->SetVisibility(ESlateVisibility::Collapsed);
 		}
 	}
 }

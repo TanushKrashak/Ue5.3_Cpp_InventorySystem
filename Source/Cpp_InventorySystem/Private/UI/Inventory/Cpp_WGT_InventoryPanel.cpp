@@ -49,6 +49,7 @@ void UCpp_WGT_InventoryPanel::RefreshInventory() {
 			ItemSlot->SetItemReference(InventoryItem);			
 			WB_InventoryPanel->AddChildToWrapBox(ItemSlot);
 		}	
+		SetInfoText();
 	}
 }
 
