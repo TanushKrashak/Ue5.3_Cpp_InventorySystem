@@ -32,6 +32,7 @@ class UInputMappingContext;
 class UInputAction;
 struct FInputActionValue;
 class UCpp_AC_Inventory;
+class UItemBase;
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
 

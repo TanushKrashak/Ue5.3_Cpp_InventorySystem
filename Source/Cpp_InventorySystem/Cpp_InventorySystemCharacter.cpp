@@ -5,6 +5,7 @@
 #include "UI/Cpp_InventoryHUD.h"
 #include "Components/Cpp_AC_Inventory.h"
 #include "World/Pickup.h"
+#include "ItemBase.h"
 
 // Engine
 #include "EnhancedInputComponent.h"
