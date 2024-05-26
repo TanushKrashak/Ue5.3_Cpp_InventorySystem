@@ -78,9 +78,15 @@ void UCpp_WGT_InventoryItemSlot::NativeOnDragDetected(const FGeometry& InGeometr
 }
 
 FReply UCpp_WGT_InventoryItemSlot::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) {
-	Super::NativeOnMouseButtonDown(InGeometry, InMouseEvent);
+	FReply Reply = Super::NativeOnMouseButtonDown(InGeometry, InMouseEvent);
 	
-	return FReply::Handled();
+	if (InMouseEvent.GetEffectingButton() == EKeys::LeftMouseButton) {
+		return Reply.Handled().DetectDrag(TakeWidget(), EKeys::LeftMouseButton);
+	}
+
+	// Submenu On Right Click is not implemented yet
+
+	return Reply.Unhandled();
 }
 
 void UCpp_WGT_InventoryItemSlot::NativeOnMouseLeave(const FPointerEvent& InMouseEvent) {
