@@ -47,6 +47,7 @@ void UCpp_WGT_InventoryToolTip::NativeConstruct() {
 		if (ItemBeingHovered->ItemNumericData.bIsStackable) {
 			const FString StackInfo = {"Max Stack Size: " + FString::FromInt(ItemBeingHovered->ItemNumericData.MaxStackSize)};
 			TXT_MaxStackSize->SetText(FText::FromString(StackInfo));
+			TXT_MaxStackSize->SetVisibility(ESlateVisibility::Visible);
 		}
 		else {
 			TXT_MaxStackSize->SetVisibility(ESlateVisibility::Collapsed);			
