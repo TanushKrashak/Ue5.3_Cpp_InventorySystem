@@ -140,8 +140,83 @@ FItemAddResult UCpp_AC_Inventory::HandleNonStackableItems(UItemBase* InItem) {
 }
 
 int32 UCpp_AC_Inventory::HandleStackableItems(UItemBase* InItem, int32 AddAmount) {
+	if (AddAmount <= 0 || FMath::IsNearlyZero(InItem->GetItemStackWeight())) {
+		UE_LOG(LogTemp, Warning, TEXT("Item Weight Or Quantity Is INVALID!"));
+		return 0;
+	}
 
-	return 0;
+	int32 AmountToDistribute = AddAmount;
+
+	// Check if the item is already in the inventory and is not a full stack.
+	UItemBase* ExistingItemStack = FindNextPartialStack(InItem);
+
+	// Distribute the items to the existing same items in the inventor to fill up the stack.
+	while (ExistingItemStack && AmountToDistribute > 0) {
+		// Calculate the amount of items that can be added to the existing stack to make it full.
+		const int32 AmountToMakeFullStack = CalculateNumberForFullStack(ExistingItemStack, AmountToDistribute);
+		// Calculate how many of the AmountToMakeFullStack can be added to the inventory based on weight capacity.
+		const int32 WeightLimitAddAmount = CalculateWeightAddAmount(ExistingItemStack, AmountToMakeFullStack);
+		
+		// As long as the remaining amount to distribute does not exceed the weight limit, add the items to the stack.
+		if (WeightLimitAddAmount > 0) {
+			// Add the items to the existing stack and update the total weight of the inventory.
+			ExistingItemStack->SetQuantity(ExistingItemStack->Quantity + WeightLimitAddAmount);
+			InventoryTotalWeight += WeightLimitAddAmount * ExistingItemStack->GetItemSingleWeight();
+
+			// Update the amount of items that still need to be distributed.
+			AmountToDistribute -= WeightLimitAddAmount;
+
+			InItem->SetQuantity(AmountToDistribute);
+
+			// TODO: Refine this logic since going over the weight limit should never be possible.
+			// if max weight capacity is reached, no need to loop through the rest of the items.
+			if (InventoryTotalWeight >= InventoryWeightCapacity) {
+				OnInventoryUpdated.Broadcast();
+				return AddAmount - AmountToDistribute;
+			}
+		}
+		else if (WeightLimitAddAmount <= 0) {
+			if (AmountToDistribute != AddAmount) {
+				// will reach this only if distributing an item to multiple stacks
+				// and the weight limit is reached before the amount to distribute is 0
+				OnInventoryUpdated.Broadcast();
+				return AddAmount - AmountToDistribute;
+			}
+			return 0;
+		}
+		if (AmountToDistribute <= 0) {
+			// All of the items have been distributed to the existing stacks.
+			OnInventoryUpdated.Broadcast();
+			return AddAmount;	
+		}
+
+		// check if there are more existing stacks that can be filled.
+		ExistingItemStack = FindNextPartialStack(InItem);
+	}
+
+	// No existing stack found, check if there is space in the inventory to add a new stack.
+	if (InventoryContents.Num() + 1 <= InventorySlotsCapacity) {
+		// Attempt to add the remaining items to a new stack.
+		const int32 WeightLimitAddAmount = CalculateWeightAddAmount(InItem, AmountToDistribute);
+
+		if (WeightLimitAddAmount > 0) {
+			// If there are still more items to distribute but the weight limit is reached
+			if (WeightLimitAddAmount < AmountToDistribute) {
+				// Adjust the input item quantity and create a new stack with the remaining items.
+				AmountToDistribute -= WeightLimitAddAmount;
+				InItem->SetQuantity(AmountToDistribute);
+
+				// Create a copy since only a part of the stack is being added to the inventory.
+				AddNewItem(InItem->CreateItemCopy(), WeightLimitAddAmount);
+				return AddAmount - AmountToDistribute;
+			}
+			// Otherwise, add the remaining items to a new stack.
+			AddNewItem(InItem, AmountToDistribute);
+			return AddAmount;
+		}
+	}
+	OnInventoryUpdated.Broadcast();
+	return AddAmount - AmountToDistribute;
 }
 
 FItemAddResult UCpp_AC_Inventory::HandleAddItem(UItemBase* InItem) {
