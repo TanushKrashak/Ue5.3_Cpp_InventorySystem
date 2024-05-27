@@ -6,6 +6,7 @@
 #include "UI/Inventory/Cpp_WGT_InventoryItemSlot.h"
 #include "Components/Cpp_AC_Inventory.h"
 #include "ItemBase.h"
+#include "UI/Inventory/Cpp_ItemDragDropOperation.h"
 
 // Engine
 #include "Components/TextBlock.h"
@@ -33,7 +34,15 @@ void UCpp_WGT_InventoryPanel::NativeOnInitialized() {
 bool UCpp_WGT_InventoryPanel::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation) {
 	Super::NativeOnDrop(InGeometry, InDragDropEvent, InOperation);
 
-	return true;
+	const UCpp_ItemDragDropOperation* ItemDragDrop = Cast<UCpp_ItemDragDropOperation>(InOperation);
+	
+	if (InventoryReference && ItemDragDrop->SourceItem) {
+		UE_LOG(LogTemp, Warning, TEXT("Item Dropped Over Inventory, Cancelling Drop"));
+		// Returning True Cancels The Drop
+		return true;
+	}
+	// Returning False Allows The Drop
+	return false;
 }
 
 void UCpp_WGT_InventoryPanel::RefreshInventory() {	

@@ -12,8 +12,7 @@ UItemBase::UItemBase() {
 UItemBase* UItemBase::CreateItemCopy()
 {	
     UItemBase* NewItem = NewObject<UItemBase>(GetTransientPackage(), UItemBase::StaticClass());
-    if (NewItem) {
-		UE_LOG(LogTemp, Warning, TEXT("CreateItemCopy Called!"));        
+    if (NewItem) {		     
         NewItem->Quantity = Quantity;
         NewItem->ID = ID;
         NewItem->ItemType = ItemType;
