@@ -62,6 +62,10 @@ ACpp_InventorySystemCharacter::ACpp_InventorySystemCharacter()
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName); // Attach the camera to the end of the boom and let the boom adjust to match the controller orientation
 	FollowCamera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
 
+	AimingCameraTimeline = CreateDefaultSubobject<UTimelineComponent>(TEXT("AimingCameraTimeline"));
+	DefaultCameraLocation = FVector{0.0f, 0.0f, 65.0f};
+	AimingCameraLocation = FVector{175.0f, 50.0f, 55.0f};
+
 	InteractionFrequency = 0.1f;
 	InteractionCheckDistance = 225.0f;
 

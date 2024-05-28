@@ -33,6 +33,7 @@ class UInputAction;
 struct FInputActionValue;
 class UCpp_AC_Inventory;
 class UItemBase;
+class UTimelineComponent;
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
 
@@ -117,15 +118,24 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category = "Character | Inventory")
 	UCpp_AC_Inventory* PlayerInventory;
 
-	float InteractionFrequency;
-	
+	// Interaction Variables
+	float InteractionFrequency;	
 	float InteractionCheckDistance;
-
 	FTimerHandle TimerHandleInteraction;
-
 	FInteractionData InteractionData;
 
+	// Timeline Variables used for camera aiming transition
+	UPROPERTY(VisibleAnywhere, Category = "Character | Camera")
+	FVector DefaultCameraLocation;
+	UPROPERTY(VisibleAnywhere, Category = "Character | Camera")
+	FVector AimingCameraLocation;
 
+	TObjectPtr<UTimelineComponent> AimingCameraTimeline;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Character | Aim Timeline")
+	UCurveFloat* AimingCameraCurve;
+
+ 
 	//=========================================================================================================================
 	// FUNCTIONS
 	//=========================================================================================================================
@@ -145,6 +155,14 @@ protected:
 	void Interact();
 
 	void ToggleMenu();
+
+	void Aim();
+	void StopAiming();
+	UFUNCTION()
+	void UpdateCameraTimeline(float TimelineValue) const;
+	UFUNCTION()
+	void CameraTimelineEnd();
+
 
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);		
