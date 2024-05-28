@@ -182,8 +182,7 @@ void ACpp_InventorySystemCharacter::PerformInteractionCheck() {
 
 	float lookDirection{(float)FVector::DotProduct(GetActorForwardVector(), GetViewRotation().Vector())};
 
-	if(lookDirection > 0) {
-		DrawDebugLine(GetWorld(), TraceStart, TraceEnd, FColor::Red, false, 1.0f, 0, 2.0f);
+	if(lookDirection > 0) {		
 
 		FCollisionQueryParams QueryParams;
 		QueryParams.AddIgnoredActor(this);
