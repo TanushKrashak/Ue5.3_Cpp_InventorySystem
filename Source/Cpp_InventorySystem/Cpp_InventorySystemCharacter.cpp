@@ -276,17 +276,22 @@ void ACpp_InventorySystemCharacter::ToggleMenu() {
 }
 
 void ACpp_InventorySystemCharacter::Aim() {
+	if (!HUD->bIsMenuVisible) {
+		bAiming = true;
+		bUseControllerRotationYaw = true;
+		GetCharacterMovement()->MaxWalkSpeed = 200.0f;
 
+		if (AimingCameraTimeline) {
+			AimingCameraTimeline->PlayFromStart();
+		}
+	}
 }
-
 void ACpp_InventorySystemCharacter::StopAiming() {
 
 }
-
 void ACpp_InventorySystemCharacter::UpdateCameraTimeline(float TimelineValue) const {
 
 }
-
 void ACpp_InventorySystemCharacter::CameraTimelineEnd() {
 
 }
