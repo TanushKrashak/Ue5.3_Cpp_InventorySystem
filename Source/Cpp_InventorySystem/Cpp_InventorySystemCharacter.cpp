@@ -50,7 +50,7 @@ ACpp_InventorySystemCharacter::ACpp_InventorySystemCharacter()
 	// Create a camera boom (pulls in towards the player if there is a collision)
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
 	CameraBoom->SetupAttachment(RootComponent);
-	CameraBoom->TargetArmLength = 400.0f; // The camera follows at this distance behind the character	
+	CameraBoom->TargetArmLength = 300.0f; // The camera follows at this distance behind the character	
 	CameraBoom->bUsePawnControlRotation = true; // Rotate the arm based on the controller
 
 	PlayerInventory = CreateDefaultSubobject<UCpp_AC_Inventory>(TEXT("PlayerInventory"));
@@ -65,6 +65,7 @@ ACpp_InventorySystemCharacter::ACpp_InventorySystemCharacter()
 	AimingCameraTimeline = CreateDefaultSubobject<UTimelineComponent>(TEXT("AimingCameraTimeline"));
 	DefaultCameraLocation = FVector{0.0f, 0.0f, 65.0f};
 	AimingCameraLocation = FVector{175.0f, 50.0f, 55.0f};
+	CameraBoom->SocketOffset = DefaultCameraLocation;
 
 	InteractionFrequency = 0.1f;
 	InteractionCheckDistance = 225.0f;
@@ -86,6 +87,17 @@ void ACpp_InventorySystemCharacter::BeginPlay() {
 	}
 
 	HUD = Cast<ACpp_InventoryHUD>(GetWorld()->GetFirstPlayerController()->GetHUD());
+
+	// Sets up Timeline Functions and variables for Aiming
+	FOnTimelineFloat AimLerpAlphaValue;
+	FOnTimelineEvent TimelineFinishedEvent;
+	AimLerpAlphaValue.BindUFunction(this, FName("UpdateCameraTimeline"));
+	TimelineFinishedEvent.BindUFunction(this, FName("CameraTimelineEnd"));
+
+	if (AimingCameraTimeline && AimingCameraCurve) {
+		AimingCameraTimeline->AddInterpFloat(AimingCameraCurve, AimLerpAlphaValue);
+		AimingCameraTimeline->SetTimelineFinishedFunc(TimelineFinishedEvent);
+	}
 }
 void ACpp_InventorySystemCharacter::Tick(float DeltaSeconds) {
 	Super::Tick(DeltaSeconds);
@@ -261,6 +273,22 @@ void ACpp_InventorySystemCharacter::Interact() {
 
 void ACpp_InventorySystemCharacter::ToggleMenu() {
 	HUD->ToggleMenu();
+}
+
+void ACpp_InventorySystemCharacter::Aim() {
+
+}
+
+void ACpp_InventorySystemCharacter::StopAiming() {
+
+}
+
+void ACpp_InventorySystemCharacter::UpdateCameraTimeline(float TimelineValue) const {
+
+}
+
+void ACpp_InventorySystemCharacter::CameraTimelineEnd() {
+
 }
 
 void ACpp_InventorySystemCharacter::Move(const FInputActionValue& Value)
