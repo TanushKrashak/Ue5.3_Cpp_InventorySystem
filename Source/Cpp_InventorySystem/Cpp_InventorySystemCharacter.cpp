@@ -287,7 +287,15 @@ void ACpp_InventorySystemCharacter::Aim() {
 	}
 }
 void ACpp_InventorySystemCharacter::StopAiming() {
+	if (bAiming) {
+		bAiming = false;
+		bUseControllerRotationYaw = false;
+		GetCharacterMovement()->MaxWalkSpeed = 500.0f;
 
+		if (AimingCameraTimeline) {
+			AimingCameraTimeline->Reverse();
+		}
+	}
 }
 void ACpp_InventorySystemCharacter::UpdateCameraTimeline(float TimelineValue) const {
 
