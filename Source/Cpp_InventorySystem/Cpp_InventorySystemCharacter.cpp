@@ -307,6 +307,8 @@ void ACpp_InventorySystemCharacter::StopAiming() {
 		bUseControllerRotationYaw = false;
 		GetCharacterMovement()->MaxWalkSpeed = 500.0f;
 
+		HUD->HideCrosshair();
+
 		if (AimingCameraTimeline) {
 			AimingCameraTimeline->Reverse();
 		}
@@ -319,7 +321,7 @@ void ACpp_InventorySystemCharacter::UpdateCameraTimeline(const float TimelineVal
 void ACpp_InventorySystemCharacter::CameraTimelineEnd() {
 	if (AimingCameraTimeline) {
 		if (AimingCameraTimeline->GetPlaybackPosition() != 0.0f) {
-			//HUD->DisplayCrosshair();
+			HUD->ShowCrosshair();
 		}
 	}
 }
