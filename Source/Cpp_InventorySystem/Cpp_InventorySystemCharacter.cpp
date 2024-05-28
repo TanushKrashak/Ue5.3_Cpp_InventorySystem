@@ -302,7 +302,11 @@ void ACpp_InventorySystemCharacter::UpdateCameraTimeline(const float TimelineVal
 	CameraBoom->SocketOffset = CameraLocation;
 }
 void ACpp_InventorySystemCharacter::CameraTimelineEnd() {
-
+	if (AimingCameraTimeline) {
+		if (AimingCameraTimeline->GetPlaybackPosition() != 0.0f)
+			//HUD->DisplayCrosshair();
+		}
+	}
 }
 
 void ACpp_InventorySystemCharacter::Move(const FInputActionValue& Value)
