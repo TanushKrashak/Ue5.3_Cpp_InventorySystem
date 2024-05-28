@@ -160,7 +160,7 @@ protected:
 	void Aim();
 	void StopAiming();
 	UFUNCTION()
-	void UpdateCameraTimeline(float TimelineValue) const;
+	void UpdateCameraTimeline(const float TimelineValue) const;
 	UFUNCTION()
 	void CameraTimelineEnd();
 

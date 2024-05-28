@@ -297,8 +297,9 @@ void ACpp_InventorySystemCharacter::StopAiming() {
 		}
 	}
 }
-void ACpp_InventorySystemCharacter::UpdateCameraTimeline(float TimelineValue) const {
-
+void ACpp_InventorySystemCharacter::UpdateCameraTimeline(const float TimelineValue) const {
+	const FVector CameraLocation = FMath::Lerp(DefaultCameraLocation, AimingCameraLocation, TimelineValue);
+	CameraBoom->SocketOffset = CameraLocation;
 }
 void ACpp_InventorySystemCharacter::CameraTimelineEnd() {
 
