@@ -41,7 +41,6 @@ void ACpp_InventoryHUD::DisplayMenu() {
 		MainMenuWidget->SetVisibility(ESlateVisibility::Visible);
 	}
 }
-
 void ACpp_InventoryHUD::HideMenu() {
 	if(MainMenuWidget) {
 		bIsMenuVisible = false;
@@ -49,7 +48,6 @@ void ACpp_InventoryHUD::HideMenu() {
 	}
 
 }
-
 void ACpp_InventoryHUD::ToggleMenu() {
 	if (bIsMenuVisible) {
 		HideMenu();
@@ -66,11 +64,12 @@ void ACpp_InventoryHUD::ToggleMenu() {
 }
 
 void ACpp_InventoryHUD::ShowCrosshair() {
-
+	if (CrosshairWidget) {
+		CrosshairWidget->SetVisibility(ESlateVisibility::Visible);
+	}
 }
-
 void ACpp_InventoryHUD::HideCrosshair() {
-
+	
 }
 
 void ACpp_InventoryHUD::ShowInteractionWidget() {
@@ -79,14 +78,12 @@ void ACpp_InventoryHUD::ShowInteractionWidget() {
 	}
 
 }
-
 void ACpp_InventoryHUD::HideInteractionWidget() {
 	if(InteractionWidget) {
 		InteractionWidget->SetVisibility(ESlateVisibility::Collapsed);
 	}
 
 }
-
 void ACpp_InventoryHUD::UpdateInteractionWidget(const FInteractableData* InteractableData) {
 	if(InteractionWidget) {
 		if(InteractionWidget->GetVisibility() == ESlateVisibility::Collapsed) {
