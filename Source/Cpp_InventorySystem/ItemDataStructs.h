@@ -67,7 +67,7 @@ struct FItemNumericData {
 	UPROPERTY(EditAnywhere)
 	int32 Weight;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY()
 	bool bIsStackable;
 };
 

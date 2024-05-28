@@ -25,8 +25,6 @@ void APickup::BeginPlay() {
 	InitializePickup(UItemBase::StaticClass(), ItemQuantity);
 }
 
-
-
 void APickup::InitializePickup(const TSubclassOf<UItemBase> BaseClass, const int32 InQuantity) {
 	if(ItemDataTable && !DesiredItemID.IsNone()) {
 		// Get the item data from the data table using the DesiredItemID
@@ -41,7 +39,8 @@ void APickup::InitializePickup(const TSubclassOf<UItemBase> BaseClass, const int
 		ItemReference->ItemAssetData = ItemData->ItemAssetData;
 		ItemReference->ItemNumericData = ItemData->ItemNumericData;
 		ItemReference->ItemStatistics = ItemData->ItemStatistics;
-
+		// Sets whether the item is stackable or not 
+		ItemReference->ItemNumericData.bIsStackable = ItemData->ItemNumericData.MaxStackSize > 1;
 		// Set the quantity of the item
 		InQuantity <= 0 ? ItemReference->SetQuantity(1) : ItemReference->SetQuantity(InQuantity);
 
