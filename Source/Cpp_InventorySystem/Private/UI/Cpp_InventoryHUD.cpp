@@ -69,7 +69,9 @@ void ACpp_InventoryHUD::ShowCrosshair() {
 	}
 }
 void ACpp_InventoryHUD::HideCrosshair() {
-	
+	if (CrosshairWidget) {
+		CrosshairWidget->SetVisibility(ESlateVisibility::Collapsed);
+	}
 }
 
 void ACpp_InventoryHUD::ShowInteractionWidget() {
