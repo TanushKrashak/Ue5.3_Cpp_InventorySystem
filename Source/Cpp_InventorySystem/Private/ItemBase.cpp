@@ -42,7 +42,7 @@ void UItemBase::SetQuantity(const int32 NewQuantity) {
 			}
 		}
 		else {
-			UE_LOG(LogTemp, Warning, TEXT("ItemBase OwningInventory Was Null (Item May Be A Pickup!))";
+			UE_LOG(LogTemp, Warning, TEXT("ItemBase OwningInventory Was Null (Item May Be A Pickup!)"));
 		}
 	}
 }

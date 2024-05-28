@@ -6,6 +6,7 @@
 #include "Components/Cpp_AC_Inventory.h"
 #include "World/Pickup.h"
 #include "ItemBase.h"
+#include "Components/TimelineComponent.h"
 
 // Engine
 #include "EnhancedInputComponent.h"
@@ -128,6 +129,10 @@ void ACpp_InventorySystemCharacter::SetupPlayerInputComponent(UInputComponent* P
 
 		// Toggle Menu
 		EnhancedInputComponent->BindAction(ToggleMenuAction, ETriggerEvent::Started, this, &ACpp_InventorySystemCharacter::ToggleMenu);
+
+		// Aiming
+		EnhancedInputComponent->BindAction(AimAction, ETriggerEvent::Started, this, &ACpp_InventorySystemCharacter::Aim);
+		EnhancedInputComponent->BindAction(AimAction, ETriggerEvent::Completed, this, &ACpp_InventorySystemCharacter::StopAiming);
 	}
 	else
 	{
@@ -303,7 +308,7 @@ void ACpp_InventorySystemCharacter::UpdateCameraTimeline(const float TimelineVal
 }
 void ACpp_InventorySystemCharacter::CameraTimelineEnd() {
 	if (AimingCameraTimeline) {
-		if (AimingCameraTimeline->GetPlaybackPosition() != 0.0f)
+		if (AimingCameraTimeline->GetPlaybackPosition() != 0.0f) {
 			//HUD->DisplayCrosshair();
 		}
 	}
