@@ -33,6 +33,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Widgets")
 	TSubclassOf<UCpp_WGT_Interaction> InteractionClass;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Widgets")
+	TSubclassOf<UUserWidget> CrosshairClass;
+
 	bool bIsMenuVisible = false;
 
 
@@ -61,7 +64,9 @@ protected:
 	UPROPERTY()
 	UCpp_WGT_Interaction* InteractionWidget;
 
-	
+	UPROPERTY()
+	UUserWidget* CrosshairWidget;
+
 	//=========================================================================================================================
 	// FUNCTIONS
 	//=========================================================================================================================
