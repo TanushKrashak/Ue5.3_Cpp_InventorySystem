@@ -66,7 +66,7 @@ ACpp_InventorySystemCharacter::ACpp_InventorySystemCharacter()
 	CameraBoom->SocketOffset = DefaultCameraLocation;
 	
 	InteractionFrequency = 0.1f;
-	InteractionCheckDistance = 225.0f;
+	InteractionCheckDistance = 200.0f;
 
 	// Capsule Default Dimensions
 	GetCapsuleComponent()->InitCapsuleSize(42.0f, 96.0f);
@@ -169,7 +169,15 @@ void ACpp_InventorySystemCharacter::DropItem(UItemBase* ItemToDrop, int32 Quanti
 void ACpp_InventorySystemCharacter::PerformInteractionCheck() {
 	InteractionData.LastInteractionCheckTime = GetWorld()->GetTimeSeconds();
 
-	FVector TraceStart{GetPawnViewLocation()};
+	FVector TraceStart{FVector::ZeroVector};		
+	if (!bAiming) {
+		InteractionCheckDistance = 200.0f;
+		TraceStart = GetPawnViewLocation();
+	}
+	else {
+		InteractionCheckDistance = 250.0f;
+		TraceStart = FollowCamera->GetComponentLocation();
+	}	
 	FVector TraceEnd{TraceStart + GetViewRotation().Vector() * InteractionCheckDistance};
 
 	float lookDirection{(float)FVector::DotProduct(GetActorForwardVector(), GetViewRotation().Vector())};
