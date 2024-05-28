@@ -277,6 +277,9 @@ void ACpp_InventorySystemCharacter::Interact() {
 
 void ACpp_InventorySystemCharacter::ToggleMenu() {
 	HUD->ToggleMenu();
+	if (HUD->bIsMenuVisible) {
+		StopAiming();
+	}
 }
 
 void ACpp_InventorySystemCharacter::Aim() {
