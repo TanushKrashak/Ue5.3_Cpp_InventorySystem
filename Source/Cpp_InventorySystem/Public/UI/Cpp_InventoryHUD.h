@@ -49,6 +49,9 @@ public:
 	void HideMenu();
 	void ToggleMenu();
 
+	void ShowCrosshair();
+	void HideCrosshair();
+
 	void ShowInteractionWidget();
 	void HideInteractionWidget();
 	void UpdateInteractionWidget(const FInteractableData* InteractableData);

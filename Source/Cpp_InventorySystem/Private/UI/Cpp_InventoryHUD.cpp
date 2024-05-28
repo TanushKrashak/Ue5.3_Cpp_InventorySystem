@@ -28,8 +28,8 @@ void ACpp_InventoryHUD::BeginPlay() {
 
 	if (CrosshairClass) {
 		// Create the crosshair
-		CrosshairWidget = CreateWidget<UCpp_WGT_Interaction>(GetWorld(), InteractionClass);
-		CrosshairWidget->AddToViewport();
+		CrosshairWidget = CreateWidget<UUserWidget>(GetWorld(), CrosshairClass);
+		CrosshairWidget->AddToViewport(10);
 		CrosshairWidget->SetVisibility(ESlateVisibility::Collapsed);
 	}
 
@@ -65,12 +65,12 @@ void ACpp_InventoryHUD::ToggleMenu() {
 
 void ACpp_InventoryHUD::ShowCrosshair() {
 	if (CrosshairWidget) {
-		CrosshairWidget->SetVisibility(ESlateVisibility::Visible);
+		CrosshairWidget->SetVisibility(ESlateVisibility::Visible);		
 	}
 }
 void ACpp_InventoryHUD::HideCrosshair() {
 	if (CrosshairWidget) {
-		CrosshairWidget->SetVisibility(ESlateVisibility::Collapsed);
+		CrosshairWidget->SetVisibility(ESlateVisibility::Collapsed);		
 	}
 }
 
