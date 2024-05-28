@@ -26,9 +26,9 @@ void APickup::BeginPlay() {
 }
 
 void APickup::InitializePickup(const TSubclassOf<UItemBase> BaseClass, const int32 InQuantity) {
-	if(ItemDataTable && !DesiredItemID.IsNone()) {
+	if(!ItemRowHandle.IsNull()) {
 		// Get the item data from the data table using the DesiredItemID
-		const FItemData* ItemData = ItemDataTable->FindRow<FItemData>(DesiredItemID, DesiredItemID.ToString());
+		const FItemData* ItemData = ItemRowHandle.GetRow<FItemData>(ItemRowHandle.RowName.ToString());
 
 		ItemReference = NewObject<UItemBase>(this, BaseClass);
 		
@@ -116,17 +116,19 @@ void APickup::TakePickup(const ACpp_InventorySystemCharacter* Taker) {
 	}
 }
 
+#if WITH_EDITOR
 void APickup::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent) {
 	Super::PostEditChangeProperty(PropertyChangedEvent);
 	
 	const FName ChangedPropertyName = PropertyChangedEvent.Property ? PropertyChangedEvent.Property->GetFName() : NAME_None;
 
-	if(ChangedPropertyName == GET_MEMBER_NAME_CHECKED(APickup, DesiredItemID)) {
-		if(ItemDataTable) {			
-			if(const FItemData* ItemData = ItemDataTable->FindRow<FItemData>(DesiredItemID, DesiredItemID.ToString())) {
+	if(ChangedPropertyName == GET_MEMBER_NAME_CHECKED(FDataTableRowHandle, RowName)) {
+		if(!ItemRowHandle.IsNull()) {			
+			if(const FItemData* ItemData = ItemRowHandle.GetRow<FItemData>(ItemRowHandle.RowName.ToString())) {
 				PickupMesh->SetStaticMesh(ItemData->ItemAssetData.Mesh);
 			}
 		}
 	}
 }
+#endif
 
