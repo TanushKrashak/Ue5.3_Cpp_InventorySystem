@@ -68,7 +68,9 @@ ACpp_InventorySystemCharacter::ACpp_InventorySystemCharacter()
 	InteractionFrequency = 0.1f;
 	InteractionCheckDistance = 225.0f;
 
-	BaseEyeHeight = 74.0f;
+	// Capsule Default Dimensions
+	GetCapsuleComponent()->InitCapsuleSize(42.0f, 96.0f);
+	BaseEyeHeight = 76.0f;
 }
 
 void ACpp_InventorySystemCharacter::BeginPlay() {
