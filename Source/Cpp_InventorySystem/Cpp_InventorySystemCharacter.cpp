@@ -22,9 +22,6 @@
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
-//////////////////////////////////////////////////////////////////////////
-// ACpp_InventorySystemCharacter
-
 ACpp_InventorySystemCharacter::ACpp_InventorySystemCharacter()
 {
 	// Set size for collision capsule
@@ -62,12 +59,12 @@ ACpp_InventorySystemCharacter::ACpp_InventorySystemCharacter()
 	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName); // Attach the camera to the end of the boom and let the boom adjust to match the controller orientation
 	FollowCamera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
-
+	
 	AimingCameraTimeline = CreateDefaultSubobject<UTimelineComponent>(TEXT("AimingCameraTimeline"));
 	DefaultCameraLocation = FVector{0.0f, 0.0f, 65.0f};
 	AimingCameraLocation = FVector{175.0f, 50.0f, 55.0f};
 	CameraBoom->SocketOffset = DefaultCameraLocation;
-
+	
 	InteractionFrequency = 0.1f;
 	InteractionCheckDistance = 225.0f;
 
@@ -94,7 +91,7 @@ void ACpp_InventorySystemCharacter::BeginPlay() {
 	FOnTimelineEvent TimelineFinishedEvent;
 	AimLerpAlphaValue.BindUFunction(this, FName("UpdateCameraTimeline"));
 	TimelineFinishedEvent.BindUFunction(this, FName("CameraTimelineEnd"));
-
+	
 	if (AimingCameraTimeline && AimingCameraCurve) {
 		AimingCameraTimeline->AddInterpFloat(AimingCameraCurve, AimLerpAlphaValue);
 		AimingCameraTimeline->SetTimelineFinishedFunc(TimelineFinishedEvent);
@@ -281,7 +278,7 @@ void ACpp_InventorySystemCharacter::ToggleMenu() {
 }
 
 void ACpp_InventorySystemCharacter::Aim() {
-	if (!HUD->bIsMenuVisible) {
+	if (!HUD->bIsMenuVisible && !bAiming) {
 		bAiming = true;
 		bUseControllerRotationYaw = true;
 		GetCharacterMovement()->MaxWalkSpeed = 200.0f;

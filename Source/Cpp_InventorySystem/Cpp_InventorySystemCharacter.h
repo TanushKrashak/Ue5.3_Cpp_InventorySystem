@@ -50,7 +50,6 @@ public:
 	bool bAiming;
 	
 
-
 	//=========================================================================================================================
 	// FUNCTIONS
 	//=========================================================================================================================
@@ -128,7 +127,7 @@ protected:
 	float InteractionCheckDistance;
 	FTimerHandle TimerHandleInteraction;
 	FInteractionData InteractionData;
-
+	
 	// Timeline Variables used for camera aiming transition
 	UPROPERTY(VisibleAnywhere, Category = "Character | Camera")
 	FVector DefaultCameraLocation;
@@ -139,7 +138,7 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Character | Aim Timeline")
 	UCurveFloat* AimingCameraCurve;
-
+	
  
 	//=========================================================================================================================
 	// FUNCTIONS
@@ -160,14 +159,14 @@ protected:
 	void Interact();
 
 	void ToggleMenu();
-
+	
 	void Aim();
 	void StopAiming();
 	UFUNCTION()
 	void UpdateCameraTimeline(const float TimelineValue) const;
 	UFUNCTION()
 	void CameraTimelineEnd();
-
+	
 
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);		
